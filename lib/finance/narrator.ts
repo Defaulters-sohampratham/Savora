@@ -7,7 +7,10 @@ export function explainRecommendation(result: CalculationResult) {
   }
 
   if (result.state === "Buffer Complete") {
-    return `Your buffer target of ${formatCurrency(result.buffer_target)} is already covered. This cycle, Savora keeps recommended saving at ${formatCurrency(result.recommended_saving)} so extra cash can go toward debt or future goals.`;
+    const goalSentence = result.goal.exists
+      ? ` ${formatCurrency(result.goal.contribution_this_cycle)} of flexible cash is going toward ${result.goal.name} this cycle, taking you to ${result.goal.progress_pct}% of your target.`
+      : "";
+    return `Your buffer target of ${formatCurrency(result.buffer_target)} is already covered. This cycle, Savora keeps recommended saving at ${formatCurrency(result.recommended_saving)} so extra cash can go toward debt or future goals.${goalSentence}`;
   }
 
   return `Because your latest income is ${formatCurrency(result.latest_income)} and essentials are ${formatCurrency(result.essential_total)}, you have ${formatCurrency(result.surplus)} left after must-pay costs. Savora recommends saving ${formatCurrency(result.recommended_saving)} this cycle and keeping ${formatCurrency(result.remaining_cash)} flexible. This helps you make steady progress.`;

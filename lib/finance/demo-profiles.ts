@@ -54,5 +54,10 @@ export const demoProfiles: WorkerProfile[] = [
     essentialExpenses: 17000,
     currentSavings: 69000,
     monthlyEmi: 4200,
+    goal: {
+      name: "New delivery bike",
+      targetAmount: 15000,
+      savedSoFar: 2000,
+    },
   },
 ];
