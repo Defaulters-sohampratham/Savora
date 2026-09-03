@@ -43,32 +43,32 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-slate-800/80 dark:bg-[#0b0f12]/90 transition-colors duration-150">
+    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl dark:border-white/[0.07] dark:bg-[#0b0f12]/85 transition-colors duration-200">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Brand identity: Clean, calm, uncluttered logo */}
+        {/* Brand identity: Refined icon with ambient glow */}
         <div className="flex items-center gap-8">
           <Link
             href="/"
-            className="group flex items-center gap-2.5 transition focus:outline-none"
+            className="group flex items-center gap-2.5 transition-transform duration-200 active:scale-[0.98] focus:outline-none"
             aria-label="Savora Home"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-700 text-white shadow-xs transition-transform duration-200 group-hover:scale-105 dark:bg-emerald-600 dark:shadow-emerald-950/50">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-600/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-emerald-600/30 dark:bg-emerald-500 dark:shadow-emerald-500/20">
               <ShieldCheck className="h-5 w-5 stroke-[2.2]" aria-hidden="true" />
             </div>
-            <span className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white font-sans">
-              Savora<span className="text-teal-600 dark:text-emerald-400">.</span>
+            <span className="text-xl font-bold tracking-tight text-slate-950 dark:text-white font-sans">
+              Savora<span className="text-emerald-600 dark:text-emerald-400">.</span>
             </span>
           </Link>
         </div>
 
-        {/* Desktop Navigation: Relaxed text links with spacious padding */}
-        <nav className="hidden md:flex md:items-center md:gap-1.5">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex md:items-center md:gap-1">
           {isLandingPage
             ? landingNavItems.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className="rounded-lg px-3.5 py-1.5 text-sm font-medium text-slate-650 hover:text-slate-950 dark:text-slate-350 dark:hover:text-white dark:hover:bg-slate-900/60 transition-colors"
+                  className="rounded-lg px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-950 hover:bg-slate-100/60 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/[0.05] transition-all duration-150"
                 >
                   {item.label}
                 </a>
@@ -80,16 +80,16 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                    className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all duration-150 ${
                       isActive
-                        ? "bg-teal-50 text-teal-900 font-semibold ring-1 ring-teal-200/70 dark:bg-emerald-950/60 dark:text-emerald-300 dark:ring-emerald-800/50"
-                        : "text-slate-650 hover:bg-slate-50 hover:text-slate-950 dark:text-slate-350 dark:hover:bg-slate-900/60 dark:hover:text-white"
+                        ? "bg-emerald-500/10 text-emerald-700 ring-1 ring-emerald-500/25 dark:bg-emerald-500/15 dark:text-emerald-300 dark:ring-emerald-500/30"
+                        : "text-slate-600 hover:bg-slate-100/60 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
                     }`}
                   >
                     <Icon
-                      className={`h-4 w-4 ${
+                      className={`h-3.5 w-3.5 ${
                         isActive
-                          ? "text-teal-700 dark:text-emerald-400"
+                          ? "text-emerald-600 dark:text-emerald-400"
                           : "text-slate-400 dark:text-slate-500"
                       }`}
                       aria-hidden="true"
@@ -106,7 +106,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggleTheme}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200/80 bg-slate-50/80 text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/80 dark:text-emerald-400 dark:hover:border-emerald-800/60 dark:hover:bg-slate-800 focus:outline-none"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200/80 bg-slate-50/80 text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-100 hover:text-slate-900 active:scale-95 dark:border-white/[0.08] dark:bg-slate-900/80 dark:text-emerald-400 dark:hover:border-emerald-800/60 dark:hover:bg-slate-800 focus:outline-none shadow-2xs"
             aria-label="Toggle theme mode"
             title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
@@ -123,8 +123,8 @@ export function Navbar() {
 
           {isAuthenticated && user ? (
             <div className="flex items-center gap-2.5">
-              <div className="flex items-center gap-2 rounded-full border border-slate-200/80 bg-slate-50/80 pl-1 pr-3.5 py-1 text-xs font-semibold text-slate-800 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-200">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-teal-700 text-[11px] font-bold text-white uppercase dark:bg-emerald-600">
+              <div className="flex items-center gap-2 rounded-full border border-slate-200/80 bg-slate-50/80 pl-1 pr-3.5 py-1 text-xs font-semibold text-slate-800 dark:border-white/[0.08] dark:bg-slate-900/80 dark:text-slate-200 shadow-2xs">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-[11px] font-bold text-white uppercase dark:bg-emerald-500 shadow-xs">
                   {(user.displayName || "User").charAt(0)}
                 </span>
                 <span className="max-w-[130px] truncate">{user.displayName || "User"}</span>
@@ -139,7 +139,7 @@ export function Navbar() {
               {isLandingPage && (
                 <Link
                   href="/dashboard"
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-teal-700 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-teal-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 transition"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600 transition"
                 >
                   <span>Dashboard</span>
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -150,13 +150,13 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <a
                 href="#auth"
-                className="rounded-lg px-3.5 py-1.5 text-sm font-medium text-slate-650 hover:text-slate-950 dark:text-slate-350 dark:hover:text-white transition"
+                className="rounded-lg px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white transition"
               >
                 Sign In
               </a>
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-teal-700 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-teal-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 transition"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-emerald-600/15 hover:bg-emerald-700 active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600 transition"
               >
                 <span>Open App</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -164,12 +164,12 @@ export function Navbar() {
             </div>
           ) : (
             <div className="flex items-center gap-2.5">
-              <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold text-amber-800 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-300">
+              <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700 dark:text-amber-300">
                 Demo Mode
               </span>
               <Link
                 href="/#auth"
-                className="rounded-xl bg-teal-700 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-teal-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 transition"
+                className="rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600 transition"
               >
                 Sign In
               </Link>
@@ -178,20 +178,30 @@ export function Navbar() {
         </div>
 
         {/* Mobile controls: Theme toggle + Hamburger button */}
-        <div className="flex items-center gap-1.5 md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
           <button
             type="button"
             onClick={toggleTheme}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200/80 bg-slate-50/80 text-slate-600 dark:border-slate-800 dark:bg-slate-900/80 dark:text-emerald-400 focus:outline-none"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200/80 bg-slate-50/80 text-slate-600 dark:border-white/[0.08] dark:bg-slate-900/80 dark:text-emerald-400 focus:outline-none"
             aria-label="Toggle theme mode"
           >
-            {mounted && (theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />)}
+            {mounted ? (
+              theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )
+            ) : (
+              <div className="h-4 w-4" />
+            )}
           </button>
+
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="inline-flex items-center justify-center rounded-xl p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-350 dark:hover:bg-slate-800 focus:outline-none"
-            aria-label="Toggle navigation menu"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200/80 bg-slate-50/80 text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:border-white/[0.08] dark:bg-slate-900/80 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white transition"
+            aria-label="Toggle mobile menu"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? (
               <X className="h-5 w-5" aria-hidden="true" />
@@ -202,123 +212,89 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="border-t border-slate-200/80 bg-white px-4 py-4 md:hidden shadow-lg space-y-3 dark:border-slate-800 dark:bg-[#0a100d]">
-          {isLandingPage ? (
-            <div className="flex flex-col space-y-1">
-              {landingNavItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900"
-                >
-                  {item.label}
-                </a>
-              ))}
-              <div className="border-t border-slate-100 dark:border-slate-800 pt-3 flex flex-col gap-2">
-                {isAuthenticated && user ? (
-                  <>
-                    <div className="flex items-center gap-2 rounded-xl bg-teal-50 px-3 py-2 text-xs font-bold text-teal-900 dark:bg-emerald-950/50 dark:text-emerald-300">
-                      <User className="h-4 w-4 text-teal-700 dark:text-emerald-400" />
-                      <span>{user.displayName}</span>
-                    </div>
-                    <Link
-                      href="/dashboard"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="w-full rounded-xl bg-teal-700 py-2.5 text-center text-xs font-bold text-white shadow-xs hover:bg-teal-800 dark:bg-emerald-600 dark:hover:bg-emerald-700"
-                    >
-                      Open Dashboard
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        signOut();
-                        setMobileMenuOpen(false);
-                      }}
-                      className="w-full rounded-xl border border-slate-200 py-2 text-center text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-900"
-                    >
-                      Sign Out
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <a
-                      href="#auth"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="w-full rounded-xl border border-slate-200 py-2 text-center text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900"
-                    >
-                      Sign In / Register
-                    </a>
-                    <Link
-                      href="/dashboard"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="w-full rounded-xl bg-teal-700 py-2.5 text-center text-xs font-bold text-white shadow-xs hover:bg-teal-800 dark:bg-emerald-600 dark:hover:bg-emerald-700"
-                    >
-                      Launch Demo
-                    </Link>
-                  </>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col space-y-1">
-              {appNavItems.map((item) => {
-                const isActive = pathname === item.href;
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.href}
+        <div className="border-t border-slate-200/80 bg-white/95 backdrop-blur-xl px-4 py-4 md:hidden shadow-lg space-y-3 dark:border-white/[0.07] dark:bg-[#0b0f12]/95">
+          <nav className="flex flex-col space-y-1">
+            {isLandingPage
+              ? landingNavItems.map((item) => (
+                  <a
+                    key={item.label}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium ${
-                      isActive
-                        ? "bg-teal-50 text-teal-900 font-semibold dark:bg-emerald-950/60 dark:text-emerald-300"
-                        : "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-900"
-                    }`}
+                    className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-white transition"
                   >
-                    <Icon className="h-4 w-4 text-teal-700 dark:text-emerald-400" />
                     {item.label}
-                  </Link>
-                );
-              })}
-
-              <div className="border-t border-slate-100 dark:border-slate-800 pt-3">
-                {isAuthenticated && user ? (
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-700 text-xs font-bold text-white uppercase dark:bg-emerald-600">
-                        {(user.displayName || "User").charAt(0)}
-                      </span>
-                      <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">{user.displayName || "User"}</span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        signOut();
-                        setMobileMenuOpen(false);
-                      }}
-                      className="text-xs font-medium text-rose-600 hover:underline dark:text-rose-400"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-amber-800 dark:text-amber-300 font-medium">Demo Mode</span>
+                  </a>
+                ))
+              : appNavItems.map((item) => {
+                  const isActive = pathname === item.href;
+                  const Icon = item.icon;
+                  return (
                     <Link
-                      href="/#auth"
+                      key={item.href}
+                      href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="text-xs font-semibold text-teal-700 hover:underline dark:text-emerald-400"
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition ${
+                        isActive
+                          ? "bg-emerald-500/10 font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
+                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-white"
+                      }`}
                     >
-                      Sign In to Save
+                      <Icon className="h-4 w-4" />
+                      <span>{item.label}</span>
                     </Link>
+                  );
+                })}
+
+            <div className="border-t border-slate-100 dark:border-slate-800 pt-3">
+              {isAuthenticated && user ? (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white uppercase dark:bg-emerald-500">
+                      {(user.displayName || "User").charAt(0)}
+                    </span>
+                    <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">{user.displayName || "User"}</span>
                   </div>
-                )}
-              </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      signOut();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="text-xs font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : isLandingPage ? (
+                <div className="flex flex-col gap-2 pt-1">
+                  <a
+                    href="#auth"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full text-center rounded-xl border border-slate-200 py-2 text-xs font-semibold text-slate-700 dark:border-slate-800 dark:text-slate-200"
+                  >
+                    Sign In
+                  </a>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full text-center rounded-xl bg-emerald-600 py-2 text-xs font-semibold text-white dark:bg-emerald-500"
+                  >
+                    Open Full App
+                  </Link>
+                </div>
+              ) : (
+                <Link
+                  href="/#auth"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-center rounded-xl bg-emerald-600 py-2 text-xs font-semibold text-white dark:bg-emerald-500"
+                >
+                  Sign In to Cloud Account
+                </Link>
+              )}
             </div>
-          )}
+          </nav>
         </div>
       )}
     </header>

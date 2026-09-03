@@ -147,79 +147,83 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f8faf9] text-slate-950 dark:bg-[#080e0b] dark:text-slate-100 transition-colors duration-150">
+    <div className="flex min-h-screen flex-col bg-[#f8faf9] text-slate-950 dark:bg-[#080e0b] dark:text-slate-100 transition-colors duration-200">
       {/* ========================================================================= */}
       {/* 1. HERO SECTION: Problem & What We Do in a Brief One-Liner Manner        */}
       {/* ========================================================================= */}
-      <section className="relative overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-white via-[#f8faf9] to-[#edf4f2] dark:border-slate-800/80 dark:from-[#080e0b] dark:via-[#0c1410] dark:to-[#080e0b] px-4 pt-12 pb-20 sm:px-6 lg:px-8 lg:pt-16 lg:pb-28">
-        {/* Subtle background glow pattern */}
-        <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-teal-100/50 via-emerald-100/40 to-transparent dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-transparent blur-3xl" />
+      <section className="relative overflow-hidden border-b border-slate-200/80 bg-grid-subtle px-4 pt-14 pb-20 sm:px-6 lg:px-8 lg:pt-20 lg:pb-28 dark:border-white/[0.07]">
+        {/* Subtle background glow effect */}
+        <div className="pointer-events-none absolute -top-32 left-1/2 -z-10 h-[550px] w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-emerald-100/40 via-teal-50/30 to-transparent blur-3xl dark:from-emerald-950/30 dark:via-teal-950/20 dark:to-transparent" />
 
         <div className="mx-auto max-w-5xl text-center">
-          {/* Top Distinct Brand Identifier Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/90 px-3.5 py-1.5 shadow-xs backdrop-blur-sm dark:border-emerald-800/50 dark:bg-emerald-950/40">
-            <span className="flex h-2 w-2 rounded-full bg-teal-600 dark:bg-emerald-400 animate-pulse" />
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-900 dark:text-emerald-300">
-              Savora · Adaptive Financial Resilience
+          {/* Top Brand Identifier Badge */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3.5 py-1.5 shadow-2xs backdrop-blur-md dark:border-emerald-500/30 dark:bg-emerald-500/10">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-semibold tracking-wide text-emerald-800 dark:text-emerald-300">
+              ✦ Adaptive Financial Resilience Engine
             </span>
           </div>
 
           {/* Main Hook Headline */}
-          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
+          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl max-w-4xl mx-auto leading-[1.15]">
             A safety net built for income that{" "}
-            <span className="bg-gradient-to-r from-teal-700 via-emerald-600 to-teal-800 dark:from-teal-300 dark:via-emerald-400 dark:to-teal-200 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-700 dark:from-emerald-300 dark:via-teal-300 dark:to-emerald-400 bg-clip-text text-transparent">
               changes every cycle
             </span>
             .
           </h1>
 
+          <p className="mt-5 max-w-2xl mx-auto text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+            Traditional budgeting breaks when weekly earnings swing. Savora automatically throttles savings when earnings dip, and builds your emergency runway when earnings surge.
+          </p>
+
           {/* Primary Quick Actions */}
-          <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
               href="#demo"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-700 px-6 py-3.5 text-base font-bold text-white shadow-md shadow-teal-700/20 transition hover:from-teal-700 hover:to-emerald-800 sm:w-auto dark:shadow-emerald-950/60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-semibold text-white shadow-md shadow-emerald-600/20 hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-600/25 active:scale-[0.98] transition-all duration-200 dark:bg-emerald-500 dark:hover:bg-emerald-600 sm:w-auto"
             >
-              <span>Try Live 3-Worker Demo</span>
+              <span>Explore 3-Worker Live Demo</span>
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href="#auth"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-base font-semibold text-slate-800 shadow-xs transition hover:border-slate-400 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white/80 px-6 py-3.5 text-sm font-semibold text-slate-800 backdrop-blur-sm hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] transition-all duration-200 dark:border-white/[0.08] dark:bg-slate-900/80 dark:text-slate-200 dark:hover:bg-slate-800 sm:w-auto shadow-2xs"
             >
-              <span>Create Free Profile</span>
+              <span>Create Free Account</span>
             </a>
           </div>
 
           {/* One-Liner Problem vs Solution Visual Pill */}
-          <div id="problem" className="mt-14 grid gap-4 text-left sm:grid-cols-2">
-            {/* The Problem Box - Refined, subtle warm rose tint */}
-            <div className="rounded-2xl border border-rose-200/90 bg-rose-50/40 dark:border-rose-900/40 dark:bg-rose-950/20 p-6 shadow-xs transition hover:border-rose-300 dark:hover:border-rose-800">
+          <div id="problem" className="mt-16 grid gap-5 text-left sm:grid-cols-2">
+            {/* The Problem Box */}
+            <div className="glass-card glass-card-interactive rounded-2xl border border-rose-200/80 bg-rose-50/30 p-6 sm:p-7 dark:border-rose-900/40 dark:bg-rose-950/15">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 px-2.5 py-0.5 text-xs font-semibold">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/20 px-2.5 py-0.5 text-xs font-semibold">
                   <XCircle className="h-3.5 w-3.5 stroke-[2.2]" />
                   <span>The Problem</span>
                 </span>
               </div>
-              <h3 className="mt-3 text-lg font-bold text-slate-900 dark:text-slate-100">
+              <h3 className="mt-3.5 text-lg font-bold text-slate-900 dark:text-slate-100">
                 Rigid Monthly Saving Rules Break
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-650 dark:text-slate-400">
+              <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                 Traditional banking rules demand fixed monthly deposits. When platform algorithms shift or demand slows, workers get trapped between paying loan EMIs or borrowing high-interest payday cash.
               </p>
             </div>
 
-            {/* What Savora Does Box - Refined, subtle soft emerald tint */}
-            <div id="solution" className="rounded-2xl border border-emerald-200/90 bg-emerald-50/40 dark:border-emerald-900/40 dark:bg-emerald-950/20 p-6 shadow-xs transition hover:border-emerald-300 dark:hover:border-emerald-800">
+            {/* What Savora Does Box */}
+            <div id="solution" className="glass-card glass-card-interactive rounded-2xl border border-emerald-200/80 bg-emerald-50/30 p-6 sm:p-7 dark:border-emerald-900/40 dark:bg-emerald-950/15">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 px-2.5 py-0.5 text-xs font-semibold">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20 px-2.5 py-0.5 text-xs font-semibold">
                   <CheckCircle2 className="h-3.5 w-3.5 stroke-[2.2]" />
                   <span>What Savora Does</span>
                 </span>
               </div>
-              <h3 className="mt-3 text-lg font-bold text-slate-900 dark:text-slate-100">
+              <h3 className="mt-3.5 text-lg font-bold text-slate-900 dark:text-slate-100">
                 Adaptive Volatility-Grounded Buffers
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-650 dark:text-slate-400">
+              <p className="mt-2 text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                 Savora senses income cycles in real time. We automatically recommend higher savings when earnings surge, and pause savings during lean weeks to safeguard your day-to-day essentials.
               </p>
             </div>
@@ -230,16 +234,16 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 2. AUTH SECTION: Clean Login / Sign Up Matching Site Vibe                 */}
       {/* ========================================================================= */}
-      <section id="auth" className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0a110e] py-16 sm:py-20">
+      <section id="auth" className="relative border-b border-slate-200/80 bg-white dark:border-white/[0.07] dark:bg-[#090e0b] py-16 sm:py-24 transition-colors">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-xl">
             {/* Header copy */}
             <div className="text-center">
-              <div className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold text-teal-800 dark:border-emerald-800/60 dark:bg-emerald-950/40 dark:text-emerald-300">
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-xs font-semibold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
                 <UserCheck className="h-3.5 w-3.5" />
-                <span>Instant Access · No Credit Card Required</span>
+                <span>Instant Setup · Zero Bank Credentials Required</span>
               </div>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+              <h2 className="mt-3.5 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
                 Get Your Personalized Resilience Plan
               </h2>
               <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
@@ -248,31 +252,33 @@ export default function LandingPage() {
             </div>
 
             {/* Auth Card Container */}
-            <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-[#fbfdfc] dark:border-slate-800 dark:bg-[#0d1713] shadow-md">
-              {/* Tab Switcher */}
-              <div className="grid grid-cols-2 border-b border-slate-200 bg-slate-50 text-center text-sm font-bold dark:border-slate-800 dark:bg-[#09100d]">
-                <button
-                  type="button"
-                  onClick={() => setAuthMode("signup")}
-                  className={`py-3.5 transition ${
-                    authMode === "signup"
-                      ? "bg-white text-teal-900 shadow-xs border-b-2 border-teal-600 dark:bg-[#0d1713] dark:text-emerald-300 dark:border-emerald-500"
-                      : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-                  }`}
-                >
-                  Create Free Account
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAuthMode("signin")}
-                  className={`py-3.5 transition ${
-                    authMode === "signin"
-                      ? "bg-white text-teal-900 shadow-xs border-b-2 border-teal-600 dark:bg-[#0d1713] dark:text-emerald-300 dark:border-emerald-500"
-                      : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-                  }`}
-                >
-                  Sign In
-                </button>
+            <div className="mt-8 overflow-hidden rounded-2xl glass-card border border-slate-200/90 dark:border-white/[0.08] shadow-xl">
+              {/* Modern Pill Tab Switcher */}
+              <div className="p-3 bg-slate-50/70 dark:bg-slate-950/40 border-b border-slate-100 dark:border-white/[0.05]">
+                <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-200/60 p-1 text-center text-xs font-semibold dark:bg-slate-900/90">
+                  <button
+                    type="button"
+                    onClick={() => setAuthMode("signup")}
+                    className={`py-2 rounded-lg transition-all duration-200 ${
+                      authMode === "signup"
+                        ? "bg-white text-slate-950 shadow-xs font-bold dark:bg-slate-800 dark:text-white"
+                        : "text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
+                    }`}
+                  >
+                    Create Free Account
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAuthMode("signin")}
+                    className={`py-2 rounded-lg transition-all duration-200 ${
+                      authMode === "signin"
+                        ? "bg-white text-slate-950 shadow-xs font-bold dark:bg-slate-800 dark:text-white"
+                        : "text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
+                    }`}
+                  >
+                    Sign In
+                  </button>
+                </div>
               </div>
 
               {/* Form Body */}
@@ -451,18 +457,18 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 3. DEMO SECTION: 3 Real Worker Personas with Live Calculations            */}
       {/* ========================================================================= */}
-      <section id="demo" className="py-16 sm:py-24 bg-[#f8faf9] dark:bg-[#080e0b] transition-colors">
+      <section id="demo" className="relative py-16 sm:py-24 bg-[#f8faf9] dark:bg-[#080e0b] transition-colors">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10">
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1 text-xs font-bold text-teal-800 shadow-2xs dark:border-emerald-800/60 dark:bg-emerald-950/40 dark:text-emerald-300">
-              <Sparkles className="h-3.5 w-3.5 text-teal-700 dark:text-emerald-400" />
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-xs font-semibold text-emerald-800 shadow-2xs dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+              <Sparkles className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Interactive Platform Demonstration</span>
             </div>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+            <h2 className="mt-3.5 text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
               See How Savora Adapts to Real Workers
             </h2>
-            <p className="mt-2 text-base text-slate-650 dark:text-slate-400">
+            <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-400">
               Select one of the three gig worker profiles below to see how our engine balances volatile income, fixed essential costs, and vehicle or micro-loans.
             </p>
           </div>
@@ -478,50 +484,50 @@ export default function LandingPage() {
                   key={profile.id}
                   type="button"
                   onClick={() => setSelectedDemoId(profile.id)}
-                  className={`group relative rounded-2xl border p-6 text-left transition-all duration-200 hover:-translate-y-1 hover:shadow-md ${
+                  className={`group relative rounded-2xl p-6 text-left transition-all duration-200 cursor-pointer ${
                     isSelected
-                      ? "border-teal-600 bg-white ring-2 ring-teal-500/20 shadow-sm dark:border-emerald-500 dark:bg-[#0f1a15] dark:ring-emerald-500/20"
-                      : "border-slate-200 bg-white/80 hover:border-slate-300 dark:border-slate-800 dark:bg-[#0c1410]/90 dark:hover:border-slate-700"
+                      ? "border-emerald-500 bg-white ring-2 ring-emerald-500/25 shadow-md shadow-emerald-500/10 dark:bg-slate-900/90 dark:border-emerald-400"
+                      : "glass-card glass-card-interactive hover:border-slate-300 dark:hover:border-white/15"
                   }`}
                 >
                   {/* Selection Indicator */}
                   {isSelected && (
-                    <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-teal-600 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white dark:bg-emerald-600">
+                    <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white dark:bg-emerald-500 shadow-xs">
                       Active Demo
                     </span>
                   )}
 
                   <div className="flex items-start justify-between">
                     <div>
-                      <h3 className="text-xl font-bold text-slate-950 dark:text-white group-hover:text-teal-700 dark:group-hover:text-emerald-400 transition">
+                      <h3 className="text-xl font-bold text-slate-950 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
                         {profile.name}
                       </h3>
-                      <p className="text-xs font-semibold text-teal-800 dark:text-emerald-400 mt-0.5">
+                      <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 mt-0.5">
                         {profile.role} · {profile.city}
                       </p>
                     </div>
                   </div>
 
-                  <p className="mt-3 text-xs leading-relaxed text-slate-650 dark:text-slate-400 line-clamp-3">
+                  <p className="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-3">
                     {profile.description}
                   </p>
 
-                  <div className="mt-5 space-y-2 border-t border-slate-100 dark:border-slate-800 pt-4 text-xs">
+                  <div className="mt-5 space-y-2 border-t border-slate-100 dark:border-white/[0.06] pt-4 text-xs">
                     <div className="flex items-center justify-between">
                       <span className="text-slate-500 dark:text-slate-400">Essential Outflow:</span>
-                      <span className="font-bold text-slate-900 dark:text-slate-200">
+                      <span className="font-mono font-bold tabular-nums text-slate-900 dark:text-slate-200">
                         {formatCurrency(totalOutflow)}/mo
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-slate-500 dark:text-slate-400">Current Buffer:</span>
-                      <span className="font-semibold text-teal-700 dark:text-emerald-400">
+                      <span className="font-mono font-bold tabular-nums text-emerald-700 dark:text-emerald-400">
                         {formatCurrency(profile.currentSavings)}
                       </span>
                     </div>
                   </div>
 
-                  <div className="mt-4 flex items-center justify-between font-bold text-xs text-teal-700 dark:text-emerald-400 group-hover:underline">
+                  <div className="mt-4 flex items-center justify-between font-bold text-xs text-emerald-700 dark:text-emerald-400 group-hover:underline">
                     <span>{isSelected ? "Currently Viewing" : "Load Worker Persona"}</span>
                     <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" />
                   </div>
@@ -531,17 +537,24 @@ export default function LandingPage() {
           </div>
 
           {/* Interactive Live Calculation Console for Active Persona */}
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-[#0c1410]">
-            {/* Console Banner */}
-            <div className="border-b border-slate-100 bg-gradient-to-r from-slate-50 to-teal-50/30 dark:border-slate-800 dark:from-[#0f1a15] dark:to-[#0a120e] px-6 py-4 sm:px-8">
+          <div className="overflow-hidden rounded-2xl glass-card border border-slate-200/90 dark:border-white/[0.08] shadow-xl">
+            {/* Terminal Top Window Header */}
+            <div className="border-b border-slate-200/80 bg-slate-100/60 dark:border-white/[0.06] dark:bg-slate-950/50 px-6 py-4 sm:px-8">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-teal-900 dark:text-emerald-400">
-                    Live Resilience Engine Output
-                  </span>
-                  <h3 className="text-xl font-bold text-slate-950 dark:text-white">
-                    Real-Time Recommendation for {activeDemoProfile.name}
-                  </h3>
+                <div className="flex items-center gap-3">
+                  <div className="hidden sm:flex items-center gap-1.5">
+                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-slate-700" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-slate-700" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-slate-700" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                      Live Resilience Engine Output
+                    </span>
+                    <h3 className="text-xl font-bold text-slate-950 dark:text-white">
+                      Real-Time Recommendation for {activeDemoProfile.name}
+                    </h3>
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -565,7 +578,7 @@ export default function LandingPage() {
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                     Recommended Saving This Cycle
                   </span>
-                  <p className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-emerald-300">
+                  <p className="text-4xl sm:text-5xl font-extrabold font-mono tracking-tight text-slate-950 dark:text-emerald-300">
                     {simulateDrop && demoResult.scenario
                       ? formatCurrency(demoResult.scenario.recommended_saving)
                       : formatCurrency(demoResult.recommended_saving)}
@@ -576,18 +589,18 @@ export default function LandingPage() {
                 </div>
 
                 {/* Emergency Buffer Target & Progress Bar */}
-                <div className="rounded-xl border border-slate-100 bg-slate-50 dark:border-slate-800 dark:bg-[#09100d] p-5 space-y-3">
+                <div className="rounded-xl border border-slate-100 bg-slate-50 dark:border-white/[0.06] dark:bg-[#09100d] p-5 space-y-3">
                   <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                     <span>Emergency Runway Buffer</span>
-                    <span className="text-violet-700 dark:text-violet-400 font-extrabold">{demoBufferPercent}% Target</span>
+                    <span className="font-mono text-emerald-700 dark:text-emerald-400 font-extrabold">{demoBufferPercent}% Target</span>
                   </div>
                   <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
                     <div
-                      className="h-full rounded-full bg-violet-600 dark:bg-violet-500 transition-all duration-500"
+                      className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500"
                       style={{ width: `${demoBufferPercent}%` }}
                     />
                   </div>
-                  <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                  <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 font-mono tabular-nums">
                     <span>Saved: {formatCurrency(activeDemoProfile.currentSavings)}</span>
                     <span>3-Mo Target: {formatCurrency(demoResult.buffer_target)}</span>
                   </div>
@@ -598,10 +611,10 @@ export default function LandingPage() {
               </div>
 
               {/* Stress Simulation Interactive Switch */}
-              <div className="rounded-xl border border-teal-200 bg-teal-50/50 dark:border-emerald-900/40 dark:bg-emerald-950/20 p-5">
+              <div className="rounded-xl border border-amber-200/80 bg-amber-50/40 dark:border-amber-900/40 dark:bg-amber-950/20 p-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-teal-900 dark:text-emerald-300">
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
                       <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                       <span>Interactive Stress Test Simulator</span>
                     </div>
@@ -610,46 +623,46 @@ export default function LandingPage() {
                     </p>
                   </div>
 
-                  <label className="inline-flex cursor-pointer items-center gap-3 rounded-xl border border-teal-300 bg-white dark:border-slate-700 dark:bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-800 dark:text-slate-200 shadow-xs transition hover:bg-teal-50 dark:hover:bg-slate-800">
+                  <label className="inline-flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white dark:border-white/[0.08] dark:bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-800 dark:text-slate-200 shadow-2xs transition hover:bg-slate-50 dark:hover:bg-slate-800">
                     <input
                       type="checkbox"
                       checked={simulateDrop}
                       onChange={(e) => setSimulateDrop(e.target.checked)}
-                      className="h-4 w-4 accent-teal-700 dark:accent-emerald-500"
+                      className="h-4 w-4 accent-emerald-600 dark:accent-emerald-500"
                     />
                     <span>{simulateDrop ? "Simulated Drop Active (-20%)" : "Enable 20% Income Drop"}</span>
                   </label>
                 </div>
 
                 {simulateDrop && demoResult.scenario && (
-                  <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50/80 dark:border-amber-900/40 dark:bg-amber-950/30 p-3.5 text-xs leading-relaxed text-amber-950 dark:text-amber-200">
+                  <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50/80 dark:border-amber-900/40 dark:bg-amber-950/30 p-3.5 text-xs leading-relaxed text-amber-950 dark:text-amber-200 font-mono">
                     <strong>Engine Reaction:</strong> Income decreases from {formatCurrency(demoResult.latest_income)} to {formatCurrency(demoResult.scenario.latest_income)}. Notice how the savings recommendation automatically throttles down from {formatCurrency(demoResult.recommended_saving)} to {formatCurrency(demoResult.scenario.recommended_saving)} to keep essentials covered!
                   </div>
                 )}
               </div>
 
               {/* Deep Dive Action */}
-              <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-100 dark:border-slate-800 pt-6 sm:flex-row">
+              <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-100 dark:border-white/[0.06] pt-6 sm:flex-row">
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   Ready to inspect full historical cashflow tables, forecasting charts, and budget breakdowns?
                 </p>
                 <div className="flex flex-wrap gap-2.5">
                   <Link
                     href="/dashboard"
-                    className="inline-flex items-center gap-2 rounded-xl bg-teal-700 px-5 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-teal-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 transition"
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600 transition"
                   >
                     <span>Open Full Worker Dashboard</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                   <Link
                     href="/outputs"
-                    className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-800 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition"
+                    className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-800 hover:bg-slate-50 dark:border-white/[0.08] dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition"
                   >
                     <span>What-If Simulator</span>
                   </Link>
                   <Link
                     href="/insights"
-                    className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-800 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition"
+                    className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-800 hover:bg-slate-50 dark:border-white/[0.08] dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition"
                   >
                     <span>Volatility Trends</span>
                   </Link>
@@ -663,23 +676,23 @@ export default function LandingPage() {
       {/* ========================================================================= */}
       {/* 4. FOOTER: Polished, High-Trust, Clean Closing                            */}
       {/* ========================================================================= */}
-      <footer className="mt-auto border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-[#070c09]">
+      <footer className="mt-auto border-t border-slate-200/80 bg-white dark:border-white/[0.07] dark:bg-[#070c09] transition-colors">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {/* Column 1: Brand & Mission */}
             <div className="space-y-3">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-600 text-white shadow-xs dark:bg-emerald-600">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-xs dark:bg-emerald-500">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <span className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white">
-                  Savora<span className="text-teal-600 dark:text-emerald-400">.</span>
+                  Savora<span className="text-emerald-600 dark:text-emerald-400">.</span>
                 </span>
               </div>
               <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
                 Building financial safety and adaptive buffer engines for the millions of hardworking gig, platform, and freelance professionals.
               </p>
-              <div className="flex items-center gap-2 text-xs font-semibold text-teal-800 dark:text-emerald-400">
+              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 dark:text-emerald-400">
                 <span className="h-2 w-2 rounded-full bg-emerald-500" />
                 <span>Deterministic Resilience Engine v1.0</span>
               </div>
@@ -690,24 +703,24 @@ export default function LandingPage() {
               <p className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200">
                 Platform Modules
               </p>
-              <ul className="mt-3 space-y-2 text-xs text-slate-650 dark:text-slate-400">
+              <ul className="mt-3 space-y-2 text-xs text-slate-600 dark:text-slate-400">
                 <li>
-                  <Link href="/dashboard" className="hover:text-teal-700 dark:hover:text-emerald-400 transition">
+                  <Link href="/dashboard" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                     Worker Dashboard
                   </Link>
                 </li>
                 <li>
-                  <Link href="/outputs" className="hover:text-teal-700 dark:hover:text-emerald-400 transition">
+                  <Link href="/outputs" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                     Stress & Drop Simulator
                   </Link>
                 </li>
                 <li>
-                  <Link href="/insights" className="hover:text-teal-700 dark:hover:text-emerald-400 transition">
+                  <Link href="/insights" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                     Volatility & Forecasting
                   </Link>
                 </li>
                 <li>
-                  <Link href="/profile" className="hover:text-teal-700 dark:hover:text-emerald-400 transition">
+                  <Link href="/profile" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                     Profile & Outflow Details
                   </Link>
                 </li>
@@ -719,18 +732,18 @@ export default function LandingPage() {
               <p className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200">
                 Target Personas
               </p>
-              <ul className="mt-3 space-y-2 text-xs text-slate-650 dark:text-slate-400">
+              <ul className="mt-3 space-y-2 text-xs text-slate-600 dark:text-slate-400">
                 <li>
-                  <span className="text-slate-800 dark:text-slate-200 font-medium">Ravi Kumar:</span> Rideshare Driver
+                  <span className="text-slate-900 dark:text-slate-200 font-medium">Ravi Kumar:</span> Rideshare Driver
                 </li>
                 <li>
-                  <span className="text-slate-800 dark:text-slate-200 font-medium">Priya Sharma:</span> Freelance Designer
+                  <span className="text-slate-900 dark:text-slate-200 font-medium">Priya Sharma:</span> Freelance Designer
                 </li>
                 <li>
-                  <span className="text-slate-800 dark:text-slate-200 font-medium">Amit Patel:</span> Quick Commerce Courier
+                  <span className="text-slate-900 dark:text-slate-200 font-medium">Amit Patel:</span> Quick Commerce Courier
                 </li>
                 <li>
-                  <span className="text-slate-800 dark:text-slate-200 font-medium">Daily Wage & Artisans:</span> Micro-budgeting
+                  <span className="text-slate-900 dark:text-slate-200 font-medium">Daily Wage & Artisans:</span> Micro-budgeting
                 </li>
               </ul>
             </div>
@@ -740,7 +753,7 @@ export default function LandingPage() {
               <p className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200">
                 Architecture & Privacy
               </p>
-              <ul className="mt-3 space-y-2 text-xs text-slate-650 dark:text-slate-400">
+              <ul className="mt-3 space-y-2 text-xs text-slate-600 dark:text-slate-400">
                 <li>Zero bank credential harvesting</li>
                 <li>Supabase-ready relational schema</li>
                 <li>Turbopack & Next.js 16 build</li>
@@ -750,19 +763,19 @@ export default function LandingPage() {
           </div>
 
           {/* Bottom copyright line */}
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-100 dark:border-slate-800 pt-8 sm:flex-row text-xs text-slate-500 dark:text-slate-400">
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-100 dark:border-white/[0.06] pt-8 sm:flex-row text-xs text-slate-500 dark:text-slate-400">
             <p>© {new Date().getFullYear()} Savora Technologies. All rights reserved.</p>
             <div className="flex items-center gap-4">
-              <a href="#problem" className="hover:text-slate-800 dark:hover:text-slate-200">
+              <a href="#problem" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">
                 Problem Statement
               </a>
-              <a href="#solution" className="hover:text-slate-800 dark:hover:text-slate-200">
+              <a href="#solution" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">
                 Adaptive Solution
               </a>
-              <a href="#demo" className="hover:text-slate-800 dark:hover:text-slate-200">
+              <a href="#demo" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">
                 Live Demo
               </a>
-              <a href="#auth" className="hover:text-slate-800 dark:hover:text-slate-200">
+              <a href="#auth" className="hover:text-slate-900 dark:hover:text-slate-200 transition-colors">
                 Sign In
               </a>
             </div>
