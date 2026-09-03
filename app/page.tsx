@@ -303,17 +303,17 @@ export default function LandingPage() {
           {/* Quick Action CTA Buttons */}
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href="#demo"
+              href="#auth"
               className="inline-flex w-full items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 px-8 py-4 text-sm font-bold text-white shadow-xl shadow-emerald-500/25 hover:from-emerald-600 hover:to-teal-700 active:scale-95 transition-all duration-200 sm:w-auto cursor-pointer"
             >
-              <span>Explore 3 Real Worker Cockpits</span>
+              <span>Create Free Account</span>
               <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="#auth"
+              href="#demo"
               className="inline-flex w-full items-center justify-center gap-2 rounded-2xl glass-cockpit px-8 py-4 text-sm font-bold text-slate-800 hover:text-slate-950 dark:text-slate-200 dark:hover:text-white active:scale-95 transition-all duration-200 sm:w-auto shadow-md"
             >
-              <span>Create Free Account</span>
+              <span>Explore 3 Real Worker Cockpits</span>
             </a>
           </div>
         </div>
@@ -396,9 +396,191 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. INTERACTIVE 3-WORKER LIVE COCKPIT (THE CENTERPIECE)                    */}
+      {/* 3. AUTH SECTION: High-Contrast, Solid, Luminous Card (Positioned Above Demo) */}
       {/* ========================================================================= */}
-      <section id="demo" className="py-24 relative overflow-hidden">
+      <section id="auth" className="py-20 border-t border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-[#050c0e] relative">
+        <div className="mx-auto max-w-xl px-4 sm:px-6 space-y-8">
+          <div className="text-center space-y-2.5">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-mono font-bold text-emerald-800 dark:text-emerald-300 shadow-sm">
+              <Lock className="h-3.5 w-3.5" />
+              <span>Zero Bank Credentials Required · 100% Free</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 dark:text-white">
+              Get Your Personal Safety Plan
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+              Takes 60 seconds to configure. Your cashflow inputs calculate your emergency buffer runway immediately.
+            </p>
+          </div>
+
+          <div className="rounded-3xl border-2 border-slate-200 dark:border-emerald-500/40 bg-white dark:bg-[#07130e] shadow-2xl overflow-hidden relative">
+            {/* Subtle glow aura */}
+            <div className="pointer-events-none absolute -top-12 -right-12 h-36 w-36 rounded-full bg-emerald-500/20 blur-2xl" />
+
+            {/* Pill Tab Switcher */}
+            <div className="p-3 bg-slate-50 dark:bg-slate-950/80 border-b border-slate-200 dark:border-white/10">
+              <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-slate-200/90 dark:bg-slate-900 p-1.5 text-xs font-bold font-mono">
+                <button
+                  type="button"
+                  onClick={() => setAuthMode("signup")}
+                  className={`py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
+                    authMode === "signup"
+                      ? "bg-white text-slate-950 shadow-md font-black dark:bg-emerald-600 dark:text-white"
+                      : "text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
+                  }`}
+                >
+                  Create Free Account
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAuthMode("signin")}
+                  className={`py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
+                    authMode === "signin"
+                      ? "bg-white text-slate-950 shadow-md font-black dark:bg-emerald-600 dark:text-white"
+                      : "text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
+                  }`}
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 sm:p-8">
+              {isAuthenticated && user ? (
+                <div className="rounded-2xl bg-emerald-500/10 border border-emerald-500/30 p-6 text-center space-y-4">
+                  <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
+                  <h3 className="text-lg font-black text-slate-950 dark:text-white">You are signed in</h3>
+                  <p className="text-xs font-mono text-slate-600 dark:text-slate-300">
+                    Logged in as <strong>{user.displayName}</strong> ({user.role})
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-3 pt-2">
+                    <Link
+                      href="/onboarding"
+                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-md hover:bg-emerald-700 transition"
+                    >
+                      <span>Update Cashflow Inputs</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                    <Link
+                      href="/dashboard"
+                      className="inline-flex items-center gap-2 rounded-xl glass-cockpit px-4 py-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:text-emerald-500 transition"
+                    >
+                      <span>Open Cockpit</span>
+                    </Link>
+                  </div>
+                </div>
+              ) : authSuccess ? (
+                <div className="rounded-2xl bg-emerald-500/10 border border-emerald-500/30 p-6 text-center space-y-3">
+                  <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
+                  <h3 className="text-lg font-bold text-emerald-950 dark:text-emerald-200">Success!</h3>
+                  <p className="text-xs text-emerald-800 dark:text-emerald-300">{authSuccess}</p>
+                </div>
+              ) : (
+                <form onSubmit={handleAuthSubmit} className="space-y-4">
+                  {authError && (
+                    <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-xs font-mono text-rose-800 dark:text-rose-300">
+                      {authError}
+                    </div>
+                  )}
+
+                  {authMode === "signup" && (
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder="e.g. Ramesh Chandra"
+                        className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-950 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 transition"
+                      />
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      Phone Number or Work Email
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.contact}
+                      onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                      placeholder="9876543210 or name@work.com"
+                      className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-950 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 transition"
+                    />
+                  </div>
+
+                  {authMode === "signup" && (
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                        Primary Platform / Gig
+                      </label>
+                      <select
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-950 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:focus:border-emerald-400 transition"
+                      >
+                        <option value="Rideshare (Uber, Ola)">Rideshare (Uber, Ola, Rapido)</option>
+                        <option value="Delivery (Zomato, Swiggy)">Food Delivery (Zomato, Swiggy)</option>
+                        <option value="Quick Commerce (Blinkit, Zepto)">Quick Commerce (Blinkit, Zepto)</option>
+                        <option value="Freelance Creative / Tech">Freelance Creative / Tech</option>
+                      </select>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      Secret Passcode
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      value={formData.pass}
+                      onChange={(e) => setFormData({ ...formData, pass: e.target.value })}
+                      placeholder="••••••••"
+                      className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-950 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 transition"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={authLoading}
+                    className="w-full rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-700 hover:to-teal-700 py-4 text-sm font-black text-white shadow-xl shadow-emerald-500/25 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
+                  >
+                    {authLoading ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Processing securely...</span>
+                      </span>
+                    ) : authMode === "signup" ? (
+                      "Create My Free Resilience Plan →"
+                    ) : (
+                      "Sign In to My Dashboard →"
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
+
+            <div className="border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#060e0a] px-6 py-4 text-xs font-mono text-slate-600 dark:text-slate-300 flex items-center justify-between">
+              <span className="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200">
+                <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                Bank-Grade Local Privacy
+              </span>
+              <span>Zero harvesting</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 4. INTERACTIVE 3-WORKER LIVE COCKPIT (THE CENTERPIECE)                    */}
+      {/* ========================================================================= */}
+      <section id="demo" className="py-24 border-t border-slate-200/80 dark:border-white/[0.08] relative overflow-hidden">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-mono font-bold text-emerald-700 dark:text-emerald-300">
@@ -603,185 +785,6 @@ export default function LandingPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. AUTH SECTION: Ultra-Clean High-Tech Card                               */}
-      {/* ========================================================================= */}
-      <section id="auth" className="py-20 border-t border-slate-200/80 dark:border-white/[0.08] bg-tech-grid">
-        <div className="mx-auto max-w-xl px-4 sm:px-6 space-y-8">
-          <div className="text-center space-y-2">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-mono font-semibold text-emerald-700 dark:text-emerald-300">
-              <Lock className="h-3.5 w-3.5" />
-              <span>Zero Bank Credentials Required</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 dark:text-white">
-              Get Your Personal Safety Plan
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              Takes 60 seconds to configure. Your data never leaves your browser unless connected to your cloud account.
-            </p>
-          </div>
-
-          <div className="glass-cockpit rounded-3xl border border-slate-200/90 dark:border-white/[0.1] shadow-2xl overflow-hidden">
-            {/* Pill Tab Switcher */}
-            <div className="p-3 bg-slate-100/70 dark:bg-slate-950/60 border-b border-slate-200/60 dark:border-white/[0.06]">
-              <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-200/80 dark:bg-slate-900 p-1 text-xs font-semibold">
-                <button
-                  type="button"
-                  onClick={() => setAuthMode("signup")}
-                  className={`py-2 rounded-lg transition ${
-                    authMode === "signup"
-                      ? "bg-white text-slate-950 shadow-xs font-bold dark:bg-slate-800 dark:text-white"
-                      : "text-slate-600 hover:text-slate-950 dark:text-slate-400"
-                  }`}
-                >
-                  Create Free Account
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAuthMode("signin")}
-                  className={`py-2 rounded-lg transition ${
-                    authMode === "signin"
-                      ? "bg-white text-slate-950 shadow-xs font-bold dark:bg-slate-800 dark:text-white"
-                      : "text-slate-600 hover:text-slate-950 dark:text-slate-400"
-                  }`}
-                >
-                  Sign In
-                </button>
-              </div>
-            </div>
-
-            {/* Body */}
-            <div className="p-6 sm:p-8">
-              {isAuthenticated && user ? (
-                <div className="rounded-2xl bg-emerald-500/10 border border-emerald-500/30 p-6 text-center space-y-4">
-                  <CheckCircle2 className="mx-auto h-10 w-10 text-emerald-500" />
-                  <h3 className="text-lg font-bold text-slate-950 dark:text-white">You are signed in</h3>
-                  <p className="text-xs font-mono text-slate-600 dark:text-slate-300">
-                    Logged in as <strong>{user.displayName}</strong> ({user.role})
-                  </p>
-                  <div className="flex flex-wrap justify-center gap-3 pt-2">
-                    <Link
-                      href="/onboarding"
-                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-md hover:bg-emerald-700 transition"
-                    >
-                      <span>Update Cashflow Inputs</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                    <Link
-                      href="/dashboard"
-                      className="inline-flex items-center gap-2 rounded-xl glass-cockpit px-4 py-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:text-emerald-500 transition"
-                    >
-                      <span>Open Cockpit</span>
-                    </Link>
-                  </div>
-                </div>
-              ) : authSuccess ? (
-                <div className="rounded-2xl bg-emerald-500/10 border border-emerald-500/30 p-6 text-center space-y-3">
-                  <CheckCircle2 className="mx-auto h-10 w-10 text-emerald-500" />
-                  <h3 className="text-lg font-bold text-emerald-950 dark:text-emerald-200">Success!</h3>
-                  <p className="text-xs text-emerald-800 dark:text-emerald-300">{authSuccess}</p>
-                </div>
-              ) : (
-                <form onSubmit={handleAuthSubmit} className="space-y-4">
-                  {authError && (
-                    <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-xs font-mono text-rose-800 dark:text-rose-300">
-                      {authError}
-                    </div>
-                  )}
-
-                  {authMode === "signup" && (
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="e.g. Ramesh Chandra"
-                        className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-white"
-                      />
-                    </div>
-                  )}
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
-                      Phone Number or Work Email
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.contact}
-                      onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                      placeholder="9876543210 or name@work.com"
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-white"
-                    />
-                  </div>
-
-                  {authMode === "signup" && (
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
-                        Primary Platform / Gig
-                      </label>
-                      <select
-                        value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-white"
-                      >
-                        <option value="Rideshare (Uber, Ola)">Rideshare (Uber, Ola, Rapido)</option>
-                        <option value="Delivery (Zomato, Swiggy)">Food Delivery (Zomato, Swiggy)</option>
-                        <option value="Quick Commerce (Blinkit, Zepto)">Quick Commerce (Blinkit, Zepto)</option>
-                        <option value="Freelance Creative / Tech">Freelance Creative / Tech</option>
-                      </select>
-                    </div>
-                  )}
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
-                      Secret Passcode
-                    </label>
-                    <input
-                      type="password"
-                      required
-                      value={formData.pass}
-                      onChange={(e) => setFormData({ ...formData, pass: e.target.value })}
-                      placeholder="••••••••"
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-white"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={authLoading}
-                    className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 hover:from-emerald-600 hover:to-teal-700 active:scale-98 transition disabled:opacity-50 cursor-pointer"
-                  >
-                    {authLoading ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Processing securely...</span>
-                      </span>
-                    ) : authMode === "signup" ? (
-                      "Create My Free Resilience Plan →"
-                    ) : (
-                      "Sign In to My Dashboard →"
-                    )}
-                  </button>
-                </form>
-              )}
-            </div>
-
-            <div className="border-t border-slate-200/60 dark:border-white/[0.06] bg-slate-100/50 dark:bg-slate-950/40 px-6 py-3.5 text-xs font-mono text-slate-500 flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-                Bank-Grade Local Privacy
-              </span>
-              <span>Zero harvesting</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
       {/* 5. FOOTER: High-Tech FinTech Closing                                      */}
       {/* ========================================================================= */}
       <footer className="border-t border-slate-200/80 dark:border-white/[0.08] bg-white dark:bg-[#020506] py-12">
@@ -793,8 +796,8 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-6">
             <a href="#problem" className="hover:text-emerald-500 transition">The Crisis</a>
-            <a href="#demo" className="hover:text-emerald-500 transition">Live Deck</a>
             <a href="#auth" className="hover:text-emerald-500 transition">Account</a>
+            <a href="#demo" className="hover:text-emerald-500 transition">Live Deck</a>
           </div>
         </div>
       </footer>
