@@ -9,7 +9,6 @@ import {
   LineChart,
   Menu,
   Moon,
-  ShieldCheck,
   SlidersHorizontal,
   Sparkles,
   Sun,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import { useWorker } from "@/lib/context/worker-context";
 import { useTheme } from "@/lib/context/theme-context";
+import { SavoraLogo } from "./savora-logo";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -52,12 +52,7 @@ export function Navbar() {
             className="group flex items-center gap-2.5 transition focus:outline-none"
             aria-label="Savora Home"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-700 text-white shadow-xs transition-transform duration-200 group-hover:scale-105 dark:bg-emerald-600 dark:shadow-emerald-950/50">
-              <ShieldCheck className="h-5 w-5 stroke-[2.2]" aria-hidden="true" />
-            </div>
-            <span className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white font-sans">
-              Savora<span className="text-teal-600 dark:text-emerald-400">.</span>
-            </span>
+            <SavoraLogo className="transition-transform duration-200 group-hover:scale-[1.035]" />
           </Link>
         </div>
 
