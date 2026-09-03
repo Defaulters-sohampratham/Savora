@@ -13,24 +13,34 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function getStoredOrSystemTheme(): Theme {
+  const saved = localStorage.getItem("savora-theme") as Theme | null;
+  if (saved === "dark" || saved === "light") {
+    return saved;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Read saved preference or system preference
-    const saved = localStorage.getItem("savora-theme") as Theme | null;
-    if (saved === "dark" || saved === "light") {
-      setThemeState(saved);
-      document.documentElement.classList.toggle("dark", saved === "dark");
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setThemeState("dark");
-      document.documentElement.classList.add("dark");
-    } else {
-      setThemeState("light");
-      document.documentElement.classList.remove("dark");
-    }
-    setMounted(true);
+    let isCurrent = true;
+
+    queueMicrotask(() => {
+      if (!isCurrent) return;
+
+      const preferredTheme = getStoredOrSystemTheme();
+      setThemeState(preferredTheme);
+      document.documentElement.classList.toggle("dark", preferredTheme === "dark");
+      setMounted(true);
+    });
+
+    return () => {
+      isCurrent = false;
+    };
   }, []);
 
   const setTheme = (newTheme: Theme) => {

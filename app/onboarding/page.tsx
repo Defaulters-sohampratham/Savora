@@ -1,20 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowRight,
   Banknote,
-  Building2,
-  Calendar,
   CheckCircle2,
-  HelpCircle,
-  Landmark,
   PiggyBank,
-  ShieldCheck,
   Sparkles,
-  TrendingUp,
   User,
   WalletCards,
 } from "lucide-react";
@@ -47,7 +41,7 @@ const MAJOR_CITIES = [
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { selectedProfile, updateUserProfile, user, isAuthenticated } = useWorker();
+  const { selectedProfile, updateUserProfile, user } = useWorker();
 
   // Form State initialized from selected profile or defaults
   const [role, setRole] = useState(selectedProfile.role || "Rideshare (Uber, Ola, Rapido)");

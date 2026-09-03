@@ -5,30 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Activity,
-  AlertTriangle,
   ArrowRight,
-  BarChart3,
-  Briefcase,
-  Check,
   CheckCircle2,
-  ChevronRight,
-  Database,
-  Gauge,
-  HelpCircle,
   Layers,
   Loader2,
   Lock,
-  PiggyBank,
   ShieldAlert,
   ShieldCheck,
-  Sliders,
-  Smartphone,
   Sparkles,
-  TrendingDown,
-  TrendingUp,
-  UserCheck,
-  Wallet,
-  XCircle,
   Zap,
 } from "lucide-react";
 import { stateStyles, useWorker } from "@/lib/context/worker-context";
@@ -46,7 +30,6 @@ export default function LandingPage() {
     user,
     isAuthenticated,
     refreshUser,
-    signOut,
   } = useWorker();
 
   // Landing page interactive demonstration is pinned to demoProfiles

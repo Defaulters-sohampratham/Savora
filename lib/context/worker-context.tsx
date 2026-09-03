@@ -14,14 +14,13 @@ import {
   profileToCalculationInput,
 } from "@/lib/finance/engine";
 import {
-  explainRecommendation,
-  explainScenario,
   generatePureLLMFallback,
 } from "@/lib/finance/narrator";
 import type {
   AuthUser,
   CalculationResult,
   FinancialState,
+  GoalInput,
   LLMExplanationResult,
   WorkerProfile,
 } from "@/lib/finance/types";
@@ -96,6 +95,8 @@ interface WorkerContextValue {
   signOut: () => Promise<void>;
   llmExplanation: LLMExplanationResult;
   isGeneratingExplanation: boolean;
+  saveGoal: (goal: GoalInput) => void;
+  applyGoalContribution: () => void;
 }
 
 const WorkerContext = createContext<WorkerContextValue | null>(null);
@@ -110,21 +111,62 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
 
   // Load custom user profile from localStorage whenever user changes
   useEffect(() => {
-    if (!user) {
-      setCustomUserProfile(null);
-      setHasCompletedOnboarding(false);
-      return;
-    }
+    let isCurrent = true;
 
-    try {
-      const savedData = localStorage.getItem(`savora_user_profile_${user.id}`);
-      const onboarded = localStorage.getItem(`savora_onboarded_${user.id}`) === "true";
-      if (savedData) {
-        setCustomUserProfile(JSON.parse(savedData));
+    queueMicrotask(() => {
+      if (!isCurrent) return;
+
+      if (!user) {
+        setCustomUserProfile(null);
+        setHasCompletedOnboarding(false);
+        return;
       }
-      setHasCompletedOnboarding(onboarded);
-    } catch (_) {}
+
+      try {
+        const savedData = localStorage.getItem(`savora_user_profile_${user.id}`);
+        const onboarded = localStorage.getItem(`savora_onboarded_${user.id}`) === "true";
+        if (savedData) {
+          setCustomUserProfile(JSON.parse(savedData));
+        }
+        setHasCompletedOnboarding(onboarded);
+      } catch {}
+    });
+
+    return () => {
+      isCurrent = false;
+    };
   }, [user]);
+
+  const [goalOverrides, setGoalOverrides] = useState<Record<string, GoalInput>>({});
+  const [hasHydratedGoals, setHasHydratedGoals] = useState(false);
+
+  useEffect(() => {
+    let isCurrent = true;
+
+    queueMicrotask(() => {
+      if (!isCurrent) return;
+
+      try {
+        const storedGoals = window.localStorage.getItem("savora-goals");
+        if (storedGoals) {
+          setGoalOverrides(JSON.parse(storedGoals) as Record<string, GoalInput>);
+        }
+      } catch {
+        // Ignore malformed local demo data and start with the profile defaults.
+      } finally {
+        setHasHydratedGoals(true);
+      }
+    });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydratedGoals) return;
+    window.localStorage.setItem("savora-goals", JSON.stringify(goalOverrides));
+  }, [goalOverrides, hasHydratedGoals]);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -177,7 +219,7 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
           try {
             localStorage.setItem(`savora_user_profile_${user.id}`, JSON.stringify(updated));
             localStorage.setItem(`savora_onboarded_${user.id}`, "true");
-          } catch (_) {}
+          } catch {}
         }
         return updated;
       });
@@ -242,10 +284,36 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
     );
   }, [user, profiles, selectedProfileId]);
 
-  const result = useMemo(
-    () => calculateFinancialResilience(profileToCalculationInput(selectedProfile)),
-    [selectedProfile]
+  const activeGoal = goalOverrides[selectedProfile.id] ?? selectedProfile.goal;
+  const profileWithGoal = useMemo(
+    () => ({ ...selectedProfile, goal: activeGoal }),
+    [activeGoal, selectedProfile],
   );
+  const result = useMemo(
+    () => calculateFinancialResilience(profileToCalculationInput(profileWithGoal)),
+    [profileWithGoal],
+  );
+
+  const saveGoal = useCallback((goal: GoalInput) => {
+    setGoalOverrides((current) => ({ ...current, [selectedProfile.id]: goal }));
+  }, [selectedProfile.id]);
+
+  const applyGoalContribution = useCallback(() => {
+    const currentGoal = result.goal;
+    if (!currentGoal.exists || currentGoal.status === "Complete") return;
+
+    setGoalOverrides((current) => ({
+      ...current,
+      [selectedProfile.id]: {
+        name: currentGoal.name,
+        targetAmount: currentGoal.target_amount,
+        savedSoFar: Math.min(
+          currentGoal.target_amount,
+          currentGoal.saved_so_far + currentGoal.contribution_this_cycle,
+        ),
+      },
+    }));
+  }, [result.goal, selectedProfile.id]);
 
   const bufferPercent = useMemo(() => {
     if (result.buffer_target <= 0) {
@@ -262,17 +330,43 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
     [result]
   );
 
-  const [llmExplanation, setLlmExplanation] =
-    useState<LLMExplanationResult>(fallbackExplanation);
+  const explanationRequestKey = useMemo(
+    () =>
+      JSON.stringify({
+        state: result.state,
+        saving: result.recommended_saving,
+        flexibleCash: result.remaining_cash,
+        buffer: result.buffer_target,
+        runway: result.runway_months,
+        goal: result.goal,
+        profile: {
+          name: selectedProfile.name,
+          role: selectedProfile.role,
+          city: selectedProfile.city,
+        },
+      }),
+    [result, selectedProfile.city, selectedProfile.name, selectedProfile.role],
+  );
+
+  const [llmExplanation, setLlmExplanation] = useState<{
+    key: string;
+    data: LLMExplanationResult;
+  } | null>(null);
   const [isGeneratingExplanation, setIsGeneratingExplanation] = useState(false);
 
-  useEffect(() => {
-    setLlmExplanation(fallbackExplanation);
-  }, [fallbackExplanation]);
+  const currentLlmExplanation =
+    llmExplanation?.key === explanationRequestKey
+      ? llmExplanation.data
+      : fallbackExplanation;
 
   useEffect(() => {
     let isCurrent = true;
-    setIsGeneratingExplanation(true);
+
+    queueMicrotask(() => {
+      if (isCurrent) {
+        setIsGeneratingExplanation(true);
+      }
+    });
 
     fetch("/api/explain", {
       method: "POST",
@@ -292,7 +386,7 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
       })
       .then((data: LLMExplanationResult) => {
         if (isCurrent && data?.recommendation_explanation) {
-          setLlmExplanation(data);
+          setLlmExplanation({ key: explanationRequestKey, data });
         }
       })
       .catch(() => {
@@ -307,7 +401,7 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
     return () => {
       isCurrent = false;
     };
-  }, [result, selectedProfile]);
+  }, [explanationRequestKey, result, selectedProfile.city, selectedProfile.name, selectedProfile.role]);
 
   const value = useMemo(
     () => ({
@@ -318,10 +412,10 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
       setSelectedProfileId,
       result,
       explanation:
-        llmExplanation.recommendation_explanation ||
+        currentLlmExplanation.recommendation_explanation ||
         fallbackExplanation.recommendation_explanation,
       scenarioExplanation:
-        llmExplanation.scenario_explanation ||
+        currentLlmExplanation.scenario_explanation ||
         fallbackExplanation.scenario_explanation,
       bufferPercent,
       stateStyle,
@@ -331,16 +425,17 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
       updateUserProfile,
       refreshUser,
       signOut,
-      llmExplanation,
+      llmExplanation: currentLlmExplanation,
       isGeneratingExplanation,
+      saveGoal,
+      applyGoalContribution,
     }),
     [
       profiles,
-      demoProfiles,
       selectedProfile,
       selectedProfileId,
       result,
-      llmExplanation,
+      currentLlmExplanation,
       fallbackExplanation,
       bufferPercent,
       stateStyle,
@@ -350,6 +445,8 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
       refreshUser,
       signOut,
       isGeneratingExplanation,
+      saveGoal,
+      applyGoalContribution,
     ]
   );
 

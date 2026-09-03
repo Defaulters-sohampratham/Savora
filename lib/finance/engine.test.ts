@@ -76,6 +76,38 @@ describe("calculateFinancialResilience", () => {
     expect(result.state).toBe("Buffer Complete");
     expect(result.buffer_target).toBe(36000);
     expect(result.recommended_saving).toBe(0);
+    expect(result.goal).toEqual({ exists: false });
+  });
+
+  it("allocates half of flexible cash to an active goal only after the buffer is complete", () => {
+    const result = calculateFinancialResilience({
+      ...baseInput,
+      currentSavings: 36000,
+      goal: { name: "New delivery bike", targetAmount: 15000, savedSoFar: 2000 },
+    });
+
+    expect(result.recommended_saving).toBe(0);
+    expect(result.remaining_cash).toBe(8000);
+    expect(result.remaining_cash_after_goal).toBe(4000);
+    expect(result.goal).toMatchObject({
+      exists: true,
+      name: "New delivery bike",
+      contribution_this_cycle: 4000,
+      progress_pct: 40,
+      remaining_amount: 9000,
+      eta_cycles: 3,
+      status: "In Progress",
+    });
+  });
+
+  it("does not allocate goal money before the emergency buffer is complete", () => {
+    const result = calculateFinancialResilience({
+      ...baseInput,
+      goal: { name: "New delivery bike", targetAmount: 15000, savedSoFar: 2000 },
+    });
+
+    expect(result.goal).toEqual({ exists: false });
+    expect(result.remaining_cash_after_goal).toBe(result.remaining_cash);
   });
 
   it("uses low confidence messaging when fewer than three income records exist", () => {
