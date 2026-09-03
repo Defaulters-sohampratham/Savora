@@ -13,11 +13,16 @@ import {
   calculateFinancialResilience,
   profileToCalculationInput,
 } from "@/lib/finance/engine";
-import { explainRecommendation, explainScenario } from "@/lib/finance/narrator";
+import {
+  explainRecommendation,
+  explainScenario,
+  generatePureLLMFallback,
+} from "@/lib/finance/narrator";
 import type {
   AuthUser,
   CalculationResult,
   FinancialState,
+  LLMExplanationResult,
   WorkerProfile,
 } from "@/lib/finance/types";
 import { getUserAction, signOutAction } from "@/app/auth/actions";
@@ -89,6 +94,8 @@ interface WorkerContextValue {
   updateUserProfile: (data: Partial<WorkerProfile>) => void;
   refreshUser: () => Promise<void>;
   signOut: () => Promise<void>;
+  llmExplanation: LLMExplanationResult;
+  isGeneratingExplanation: boolean;
 }
 
 const WorkerContext = createContext<WorkerContextValue | null>(null);
@@ -240,15 +247,67 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
     [selectedProfile]
   );
 
-  const explanation = useMemo(() => explainRecommendation(result), [result]);
-  const scenarioExplanation = useMemo(() => explainScenario(result), [result]);
+  const bufferPercent = useMemo(() => {
+    if (result.buffer_target <= 0) {
+      return 0;
+    }
 
-  const bufferPercent = Math.min(
-    100,
-    Math.round((selectedProfile.currentSavings / result.buffer_target) * 100)
-  );
+    return Math.min(100, Math.round((selectedProfile.currentSavings / result.buffer_target) * 100));
+  }, [result.buffer_target, selectedProfile.currentSavings]);
 
   const stateStyle = stateStyles[result.state];
+
+  const fallbackExplanation = useMemo(
+    () => generatePureLLMFallback(result),
+    [result]
+  );
+
+  const [llmExplanation, setLlmExplanation] =
+    useState<LLMExplanationResult>(fallbackExplanation);
+  const [isGeneratingExplanation, setIsGeneratingExplanation] = useState(false);
+
+  useEffect(() => {
+    setLlmExplanation(fallbackExplanation);
+  }, [fallbackExplanation]);
+
+  useEffect(() => {
+    let isCurrent = true;
+    setIsGeneratingExplanation(true);
+
+    fetch("/api/explain", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        result,
+        profile: {
+          name: selectedProfile.name,
+          role: selectedProfile.role,
+          city: selectedProfile.city,
+        },
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("API failed");
+        return res.json();
+      })
+      .then((data: LLMExplanationResult) => {
+        if (isCurrent && data?.recommendation_explanation) {
+          setLlmExplanation(data);
+        }
+      })
+      .catch(() => {
+        // Fallback is already present
+      })
+      .finally(() => {
+        if (isCurrent) {
+          setIsGeneratingExplanation(false);
+        }
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [result, selectedProfile]);
 
   const value = useMemo(
     () => ({
@@ -258,8 +317,12 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
       selectedProfileId,
       setSelectedProfileId,
       result,
-      explanation,
-      scenarioExplanation,
+      explanation:
+        llmExplanation.recommendation_explanation ||
+        fallbackExplanation.recommendation_explanation,
+      scenarioExplanation:
+        llmExplanation.scenario_explanation ||
+        fallbackExplanation.scenario_explanation,
       bufferPercent,
       stateStyle,
       user,
@@ -268,14 +331,17 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
       updateUserProfile,
       refreshUser,
       signOut,
+      llmExplanation,
+      isGeneratingExplanation,
     }),
     [
       profiles,
+      demoProfiles,
       selectedProfile,
       selectedProfileId,
       result,
-      explanation,
-      scenarioExplanation,
+      llmExplanation,
+      fallbackExplanation,
       bufferPercent,
       stateStyle,
       user,
@@ -283,6 +349,7 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
       updateUserProfile,
       refreshUser,
       signOut,
+      isGeneratingExplanation,
     ]
   );
 

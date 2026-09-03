@@ -168,7 +168,7 @@ export default function LandingPage() {
           <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
             A safety net built for income that{" "}
             <span className="bg-gradient-to-r from-teal-700 via-emerald-600 to-teal-800 dark:from-teal-300 dark:via-emerald-400 dark:to-teal-200 bg-clip-text text-transparent">
-              changes every week
+              changes every cycle
             </span>
             .
           </h1>

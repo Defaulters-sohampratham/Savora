@@ -99,6 +99,37 @@ describe("calculateFinancialResilience", () => {
     expect(result.latest_income).toBe(20000);
     expect(result.scenario?.latest_income).toBe(16000);
     expect(result.scenario?.recommended_saving).toBe(1200);
+    expect(result.scenario?.average_income).toBe(result.average_income);
+  });
+
+  it("uses the third most recent income for the older weighted forecast value", () => {
+    const result = calculateFinancialResilience({
+      ...baseInput,
+      incomeHistory: [
+        { amount: 10000, date: "2026-03-31" },
+        { amount: 40000, date: "2026-04-30" },
+        { amount: 30000, date: "2026-05-31" },
+        { amount: 20000, date: "2026-06-30" },
+      ],
+    });
+
+    // 0.50 × 20,000 + 0.30 × 30,000 + 0.20 × 40,000
+    expect(result.forecast.expected).toBe(27000);
+  });
+
+  it("keeps the historical average fixed when classifying the 20 percent-drop scenario", () => {
+    const result = calculateFinancialResilience({
+      ...baseInput,
+      incomeHistory: [
+        { amount: 10000, date: "2026-04-30" },
+        { amount: 10000, date: "2026-05-31" },
+        { amount: 16000, date: "2026-06-30" },
+      ],
+    });
+
+    expect(result.scenario?.latest_income).toBe(12800);
+    expect(result.scenario?.average_income).toBe(12000);
+    expect(result.scenario?.state).toBe("Normal");
   });
 
   it("never returns a negative conservative forecast", () => {

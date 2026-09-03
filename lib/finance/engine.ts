@@ -142,18 +142,21 @@ function buildFactors({
   return factors;
 }
 
+/**
+ * Runs the deterministic resilience rules.  `scenarioLatestIncome` changes
+ * only the current-cycle income: the historical average and volatility range
+ * stay anchored to the recorded income history for a like-for-like stress test.
+ */
 function calculateCore(input: CalculationInput, scenarioLatestIncome?: number): ScenarioResult {
   const sortedIncome = sortIncomeHistory(input.incomeHistory);
   const amounts = sortedIncome.map((entry) => entry.amount);
   const latestIncome = scenarioLatestIncome ?? amounts.at(-1) ?? 0;
   const previousIncome = amounts.at(-2) ?? latestIncome;
-  const olderAmounts = amounts.slice(0, Math.max(amounts.length - 2, 0));
-  const olderIncome = olderAmounts.length > 0 ? mean(olderAmounts) : previousIncome;
-  const averageIncome = mean(
-    scenarioLatestIncome === undefined
-      ? amounts
-      : [...amounts.slice(0, -1), scenarioLatestIncome],
-  );
+  // "Older income" is the third most recent record. For incomplete history,
+  // use the nearest available observation rather than introducing an average
+  // that is not part of the stated three-point weighting rule.
+  const olderIncome = amounts.at(-3) ?? previousIncome;
+  const averageIncome = mean(amounts);
   const volatilityRange = amounts.length === 0 ? 0 : Math.max(...amounts) - Math.min(...amounts);
   const weightedExpected = 0.5 * latestIncome + 0.3 * previousIncome + 0.2 * olderIncome;
   const uncertaintyMargin = Math.min(0.5 * volatilityRange, 0.3 * weightedExpected);

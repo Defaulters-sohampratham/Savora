@@ -23,11 +23,18 @@ export default function DashboardPage() {
     selectedProfileId,
     setSelectedProfileId,
     result,
-    stateStyle,
     explanation,
+    stateStyle,
     isAuthenticated,
     user,
   } = useWorker();
+  const confidencePercent =
+    result.confidence === "High" ? 100 : result.confidence === "Medium" ? 66 : 33;
+  const compactActionSummary = result.shortfall.exists
+    ? `Cover the ${formatCurrency(result.shortfall.amount)} shortfall before saving this cycle.`
+    : result.state === "Buffer Complete"
+      ? "Your buffer is complete—direct this cycle's surplus toward debt or goals."
+      : `Save ${formatCurrency(result.recommended_saving)} from your ${formatCurrency(result.surplus)} surplus; keep ${formatCurrency(result.remaining_cash)} flexible.`;
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
@@ -98,8 +105,16 @@ export default function DashboardPage() {
               {result.state_reason}
             </p>
           </div>
-          <div className="flex shrink-0 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950/50 p-3.5 text-emerald-700 dark:text-emerald-400">
-            <Gauge className="h-8 w-8" aria-hidden="true" />
+          <div
+            className="grid h-16 w-16 shrink-0 place-items-center rounded-full p-1 shadow-2xs"
+            role="img"
+            aria-label={`${result.confidence} confidence based on available income history`}
+            style={{ background: `conic-gradient(#059669 ${confidencePercent}%, #d1fae5 0)` }}
+          >
+            <div className="grid h-full w-full place-items-center rounded-full bg-white dark:bg-slate-900 text-center">
+              <Gauge className="h-4 w-4 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
+              <span className="-mt-1.5 text-[10px] font-bold text-emerald-800 dark:text-emerald-300">{confidencePercent}%</span>
+            </div>
           </div>
         </div>
       </section>
