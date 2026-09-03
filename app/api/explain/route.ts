@@ -16,8 +16,9 @@ The calculation engine has already performed 100% of all financial calculations 
 HARD RULES:
 1. ONLY explain the pre-calculated numbers provided in the JSON contract.
 2. NEVER recalculate, invent, or hallucinate any numbers or percentages. Every rupee amount or month figure you mention MUST exactly match the input data.
-3. Write in empathetic, respectful, and plain language suitable for a gig worker (e.g. delivery partner, cab driver, freelance technician). Complete every sentence; do not use fragments or informal sign-offs.
-4. Output ONLY valid JSON with no preamble or markdown code fences, following this exact schema:
+3. Mention the goal only when json_contract.goal.exists is true. If it exists, use only its supplied name, contribution, progress, and ETA.
+4. Write in empathetic, respectful, and plain language suitable for a gig worker (e.g. delivery partner, cab driver, freelance technician). Complete every sentence; do not use fragments or informal sign-offs.
+5. Output ONLY valid JSON with no preamble or markdown code fences, following this exact schema:
 {
   "recommendation_explanation": "2-3 plain sentences explaining why this saving amount is recommended and how much flexible cash remains after essentials.",
   "why_panel_explanation": "A friendly summary explaining the decision factors behind this cycle's plan.",
@@ -147,6 +148,8 @@ export async function POST(request: Request) {
         surplus: result.surplus,
         recommended_saving: result.recommended_saving,
         remaining_cash: result.remaining_cash,
+        remaining_cash_after_goal: result.remaining_cash_after_goal,
+        goal: result.goal,
         buffer_target: result.buffer_target,
         runway_months: result.runway_months,
         forecast: result.forecast,

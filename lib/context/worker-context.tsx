@@ -21,6 +21,7 @@ import {
 import type {
   CalculationResult,
   FinancialState,
+  GoalInput,
   LLMExplanationResult,
   WorkerProfile,
 } from "@/lib/finance/types";
@@ -100,6 +101,8 @@ interface WorkerContextValue {
   signOut: () => Promise<void>;
   llmExplanation: LLMExplanationResult;
   isGeneratingExplanation: boolean;
+  saveGoal: (goal: GoalInput) => void;
+  applyGoalContribution: () => void;
 }
 
 const WorkerContext = createContext<WorkerContextValue | null>(null);
@@ -109,6 +112,26 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
   const [selectedProfileId, setSelectedProfileId] = useState<string>(
     demoProfiles[0]?.id ?? ""
   );
+  const [goalOverrides, setGoalOverrides] = useState<Record<string, GoalInput>>({});
+  const [hasHydratedGoals, setHasHydratedGoals] = useState(false);
+
+  useEffect(() => {
+    try {
+      const storedGoals = window.localStorage.getItem("savora-goals");
+      if (storedGoals) {
+        setGoalOverrides(JSON.parse(storedGoals) as Record<string, GoalInput>);
+      }
+    } catch {
+      // Ignore malformed local demo data and start with the profile defaults.
+    } finally {
+      setHasHydratedGoals(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydratedGoals) return;
+    window.localStorage.setItem("savora-goals", JSON.stringify(goalOverrides));
+  }, [goalOverrides, hasHydratedGoals]);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -191,10 +214,36 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
     );
   }, [user, profiles, selectedProfileId]);
 
-  const result = useMemo(
-    () => calculateFinancialResilience(profileToCalculationInput(selectedProfile)),
-    [selectedProfile]
+  const activeGoal = goalOverrides[selectedProfile.id] ?? selectedProfile.goal;
+  const profileWithGoal = useMemo(
+    () => ({ ...selectedProfile, goal: activeGoal }),
+    [activeGoal, selectedProfile],
   );
+  const result = useMemo(
+    () => calculateFinancialResilience(profileToCalculationInput(profileWithGoal)),
+    [profileWithGoal],
+  );
+
+  const saveGoal = useCallback((goal: GoalInput) => {
+    setGoalOverrides((current) => ({ ...current, [selectedProfile.id]: goal }));
+  }, [selectedProfile.id]);
+
+  const applyGoalContribution = useCallback(() => {
+    const currentGoal = result.goal;
+    if (!currentGoal.exists || currentGoal.status === "Complete") return;
+
+    setGoalOverrides((current) => ({
+      ...current,
+      [selectedProfile.id]: {
+        name: currentGoal.name,
+        targetAmount: currentGoal.target_amount,
+        savedSoFar: Math.min(
+          currentGoal.target_amount,
+          currentGoal.saved_so_far + currentGoal.contribution_this_cycle,
+        ),
+      },
+    }));
+  }, [result.goal, selectedProfile.id]);
 
   const bufferPercent = useMemo(() => {
     if (result.buffer_target <= 0) {
@@ -278,6 +327,8 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
         signOut,
         llmExplanation,
         isGeneratingExplanation,
+        saveGoal,
+        applyGoalContribution,
       }}
     >
       {children}

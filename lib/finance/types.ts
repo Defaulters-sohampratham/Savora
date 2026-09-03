@@ -20,6 +20,13 @@ export type WorkerProfile = {
   essentialExpenses: number;
   currentSavings: number;
   monthlyEmi: number;
+  goal?: GoalInput;
+};
+
+export type GoalInput = {
+  name: string;
+  targetAmount: number;
+  savedSoFar: number;
 };
 
 export type CalculationInput = {
@@ -28,7 +35,22 @@ export type CalculationInput = {
   currentSavings: number;
   monthlyEmi: number;
   includeScenario?: boolean;
+  goal?: GoalInput;
 };
+
+export type GoalResult =
+  | { exists: false }
+  | {
+      exists: true;
+      name: string;
+      target_amount: number;
+      saved_so_far: number;
+      contribution_this_cycle: number;
+      progress_pct: number;
+      remaining_amount: number;
+      eta_cycles: number | null;
+      status: "In Progress" | "Complete";
+    };
 
 export type Forecast = {
   conservative: number;
@@ -60,6 +82,8 @@ export type CalculationResult = {
   surplus: number;
   recommended_saving: number;
   remaining_cash: number;
+  remaining_cash_after_goal: number;
+  goal: GoalResult;
   buffer_target: number;
   runway_months: number;
   forecast: Forecast;

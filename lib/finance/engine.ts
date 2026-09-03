@@ -2,6 +2,7 @@ import type {
   CalculationInput,
   CalculationResult,
   FinancialState,
+  GoalResult,
   IncomeRecord,
   ScenarioResult,
 } from "./types";
@@ -142,6 +143,38 @@ function buildFactors({
   return factors;
 }
 
+function calculateGoal(input: CalculationInput, state: FinancialState, remainingCash: number): GoalResult {
+  const goal = input.goal;
+
+  if (
+    state !== "Buffer Complete" ||
+    !goal ||
+    !goal.name.trim() ||
+    !Number.isFinite(goal.targetAmount) ||
+    goal.targetAmount <= 0
+  ) {
+    return { exists: false };
+  }
+
+  const targetAmount = Math.max(0, goal.targetAmount);
+  const savedSoFar = Math.min(targetAmount, Math.max(0, goal.savedSoFar));
+  const contribution = Math.min(Math.max(0, remainingCash * 0.5), targetAmount - savedSoFar);
+  const updatedSavings = savedSoFar + contribution;
+  const remainingAmount = Math.max(0, targetAmount - updatedSavings);
+
+  return {
+    exists: true,
+    name: goal.name.trim(),
+    target_amount: roundCurrency(targetAmount),
+    saved_so_far: roundCurrency(savedSoFar),
+    contribution_this_cycle: roundCurrency(contribution),
+    progress_pct: Math.min(100, Math.round((updatedSavings / targetAmount) * 1000) / 10),
+    remaining_amount: roundCurrency(remainingAmount),
+    eta_cycles: remainingAmount === 0 || contribution === 0 ? null : Math.ceil(remainingAmount / contribution),
+    status: remainingAmount === 0 ? "Complete" : "In Progress",
+  };
+}
+
 /**
  * Runs the deterministic resilience rules.  `scenarioLatestIncome` changes
  * only the current-cycle income: the historical average and volatility range
@@ -176,6 +209,10 @@ function calculateCore(input: CalculationInput, scenarioLatestIncome?: number): 
   const savingRate = surplus > 0 ? savingRateForState(state) : 0;
   const recommendedSaving = savingRate * surplus;
   const remainingCash = surplus - recommendedSaving;
+  const goal = calculateGoal(input, state, remainingCash);
+  const remainingCashAfterGoal = goal.exists
+    ? remainingCash - goal.contribution_this_cycle
+    : remainingCash;
   const ratio = averageIncome === 0 ? 0 : latestIncome / averageIncome;
 
   return {
@@ -187,6 +224,8 @@ function calculateCore(input: CalculationInput, scenarioLatestIncome?: number): 
     surplus: roundCurrency(surplus),
     recommended_saving: roundCurrency(recommendedSaving),
     remaining_cash: roundCurrency(remainingCash),
+    remaining_cash_after_goal: roundCurrency(remainingCashAfterGoal),
+    goal,
     buffer_target: roundCurrency(bufferTarget),
     runway_months: roundMonths(runwayMonths),
     forecast: {
@@ -232,12 +271,14 @@ export function profileToCalculationInput(profile: {
   essentialExpenses: number;
   currentSavings: number;
   monthlyEmi: number;
+  goal?: CalculationInput["goal"];
 }): CalculationInput {
   return {
     incomeHistory: profile.monthlyIncome,
     essentialExpenses: profile.essentialExpenses,
     currentSavings: profile.currentSavings,
     monthlyEmi: profile.monthlyEmi,
+    goal: profile.goal,
   };
 }
 
