@@ -3,13 +3,17 @@
 @custom-variant dark (&:is(.dark, .dark *));
 
 :root {
-  --background: #f9fafb;
-  --foreground: #0f172a;
+  --background: #f8fafc;
+  --foreground: #020617;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(226, 232, 240, 0.8);
 }
 
 .dark {
-  --background: #0b0f12;
-  --foreground: #f1f5f9;
+  --background: #04080a;
+  --foreground: #f8fafc;
+  --card-bg: rgba(8, 15, 18, 0.75);
+  --card-border: rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -19,6 +23,7 @@
 html {
   background: var(--background);
   color-scheme: light;
+  scroll-behavior: smooth;
 }
 
 html.dark {
@@ -31,29 +36,209 @@ body {
   font-family:
     var(--font-plus-jakarta-sans), "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
 
-button,
-summary,
-input {
-  font: inherit;
+/* ============================================================================== */
+/* ATMOSPHERIC GLOWS & AURORA BEAMS                                              */
+/* ============================================================================== */
+
+/* Ambient top glow */
+.ambient-aurora-top {
+  position: absolute;
+  top: -160px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  height: 600px;
+  background: radial-gradient(
+    circle at 50% 30%,
+    rgba(16, 185, 129, 0.18) 0%,
+    rgba(6, 182, 212, 0.12) 35%,
+    rgba(14, 165, 233, 0.05) 60%,
+    transparent 75%
+  );
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
 }
 
-button:focus-visible,
-summary:focus-visible,
-input:focus-visible {
-  outline: 3px solid rgba(13, 148, 136, 0.32);
-  outline-offset: 3px;
+html.dark .ambient-aurora-top {
+  background: radial-gradient(
+    circle at 50% 30%,
+    rgba(16, 185, 129, 0.22) 0%,
+    rgba(6, 182, 212, 0.15) 40%,
+    rgba(99, 102, 241, 0.08) 65%,
+    transparent 80%
+  );
 }
 
-.text-slate-350 {
-  color: #cbd5e1;
+/* High-tech Grid Background */
+.bg-tech-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
 }
 
-.text-slate-650 {
-  color: #475569;
+html.dark .bg-tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 }
 
-.text-slate-850 {
-  color: #1e293b;
+/* ============================================================================== */
+/* LUXURY GLASS CARDS WITH SHINING SPECULAR BORDER                                */
+/* ============================================================================== */
+
+.glass-cockpit {
+  background: var(--card-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--card-border);
+  position: relative;
+  box-shadow: 
+    0 20px 40px -15px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
 }
+
+html.dark .glass-cockpit {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 0 35px -5px rgba(16, 185, 129, 0.08);
+}
+
+.glass-cockpit-interactive {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-cockpit-interactive:hover {
+  transform: translateY(-3px);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 
+    0 30px 60px -15px rgba(16, 185, 129, 0.15),
+    0 0 0 1px rgba(16, 185, 129, 0.25) inset;
+}
+
+/* Glowing Neon Border Accents */
+.neon-border-emerald {
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.25);
+}
+
+.neon-border-cyan {
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  box-shadow: 0 0 20px -3px rgba(6, 182, 212, 0.25);
+}
+
+.neon-border-rose {
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  box-shadow: 0 0 20px -3px rgba(244, 63, 94, 0.25);
+}
+
+/* ============================================================================== */
+/* LUXURY SLIDER FOR LIVE FINANCIAL INTERACTION                                   */
+/* ============================================================================== */
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: rgba(16, 185, 129, 0.15);
+  border-radius: 9999px;
+  outline: none;
+  transition: background 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.7);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 22px rgba(16, 185, 129, 0.9);
+}
+
+html.dark input[type="range"]::-webkit-slider-thumb {
+  border-color: #04080a;
+}
+
+/* ============================================================================== */
+/* SHIMMER & GLOW ANIMATIONS                                                      */
+/* ============================================================================== */
+
+@keyframes pulse-beam {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.03); }
+}
+
+.animate-pulse-beam {
+  animation: pulse-beam 6s ease-in-out infinite;
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+/* Text Shimmer Gradient */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #059669 0%,
+    #10b981 25%,
+    #34d399 50%,
+    #10b981 75%,
+    #059669 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer-text 5s linear infinite;
+}
+
+html.dark .text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #34d399 0%,
+    #6ee7b7 25%,
+    #a7f3d0 50%,
+    #6ee7b7 75%,
+    #34d399 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@keyframes shimmer-text {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.text-slate-350 { color: #cbd5e1; }
+.text-slate-650 { color: #475569; }
+.text-slate-850 { color: #1e293b; }
