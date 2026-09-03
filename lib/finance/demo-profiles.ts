@@ -1,0 +1,58 @@
+import type { WorkerProfile } from "./types";
+
+export const demoProfiles: WorkerProfile[] = [
+  {
+    id: "ravi",
+    name: "Ravi Kumar",
+    role: "Delivery partner",
+    city: "Bengaluru",
+    description: "Strong month after two uneven cycles; useful for showing a high-income saving push.",
+    monthlyIncome: [
+      { amount: 14500, date: "2026-03-31" },
+      { amount: 19200, date: "2026-04-30" },
+      { amount: 16750, date: "2026-05-31" },
+      { amount: 22100, date: "2026-06-30" },
+      { amount: 15800, date: "2026-07-31" },
+      { amount: 26000, date: "2026-08-31" },
+    ],
+    essentialExpenses: 13200,
+    currentSavings: 18500,
+    monthlyEmi: 2800,
+  },
+  {
+    id: "meena",
+    name: "Meena S.",
+    role: "Home services professional",
+    city: "Pune",
+    description: "Income dip with EMI pressure; shows how Savora protects cash during a tight month.",
+    monthlyIncome: [
+      { amount: 24800, date: "2026-03-31" },
+      { amount: 23100, date: "2026-04-30" },
+      { amount: 20500, date: "2026-05-31" },
+      { amount: 21400, date: "2026-06-30" },
+      { amount: 18900, date: "2026-07-31" },
+      { amount: 13900, date: "2026-08-31" },
+    ],
+    essentialExpenses: 13800,
+    currentSavings: 9200,
+    monthlyEmi: 2600,
+  },
+  {
+    id: "farhan",
+    name: "Farhan Ali",
+    role: "Ride-hailing driver",
+    city: "Hyderabad",
+    description: "Stable income with a completed emergency buffer; shows debt/goals redirection.",
+    monthlyIncome: [
+      { amount: 31500, date: "2026-03-31" },
+      { amount: 32600, date: "2026-04-30" },
+      { amount: 30200, date: "2026-05-31" },
+      { amount: 33800, date: "2026-06-30" },
+      { amount: 32100, date: "2026-07-31" },
+      { amount: 33400, date: "2026-08-31" },
+    ],
+    essentialExpenses: 17000,
+    currentSavings: 69000,
+    monthlyEmi: 4200,
+  },
+];
