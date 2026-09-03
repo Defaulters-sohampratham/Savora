@@ -171,27 +171,27 @@ export default function OnboardingPage() {
       <section className="glass-card relative overflow-hidden rounded-2xl p-6 sm:p-7 border border-slate-200/90 dark:border-white/[0.08] shadow-sm">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-sm font-semibold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Step 2 · Financial Cashflow Setup</span>
             </div>
             <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white">
               Welcome{user?.displayName ? `, ${user.displayName}` : ""}! Let&apos;s Set Up Your Baseline
             </h1>
-            <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Provide your typical cashflow numbers. Savora will compute your financial resilience state and tailor savings recommendations automatically.
             </p>
           </div>
           <Link
             href="/dashboard"
-            className="text-xs font-semibold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 underline self-start sm:self-auto"
+            className="text-sm font-semibold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 underline self-start sm:self-auto"
           >
             Skip for now
           </Link>
         </div>
 
         {/* Quick starter presets */}
-        <div className="mt-5 pt-4 border-t border-slate-100 dark:border-white/[0.06] flex flex-wrap items-center gap-2 text-xs">
+        <div className="mt-5 pt-4 border-t border-slate-100 dark:border-white/[0.06] flex flex-wrap items-center gap-2 text-sm">
           <span className="text-slate-400 dark:text-slate-500 font-semibold">Quick Presets:</span>
           <button
             type="button"
@@ -230,7 +230,7 @@ export default function OnboardingPage() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                 Primary Gig Role / Category
               </label>
               <select
@@ -247,7 +247,7 @@ export default function OnboardingPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                 Base City
               </label>
               <select
@@ -274,7 +274,7 @@ export default function OnboardingPage() {
                 2. Monthly Outflow Commitments
               </h2>
             </div>
-            <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
+            <span className="text-sm font-mono text-slate-500 dark:text-slate-400">
               Total Outflow: <strong className="text-slate-900 dark:text-white font-bold">{formatCurrency(totalOutflow)}/mo</strong>
             </span>
           </div>
@@ -282,13 +282,13 @@ export default function OnboardingPage() {
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <div className="flex items-center justify-between">
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                   Essential Living Costs (₹/mo)
                 </label>
-                <span className="text-[11px] text-slate-400">Rent, food, fuel, bills</span>
+                <span className="text-sm text-slate-400">Rent, food, fuel, bills</span>
               </div>
               <div className="relative mt-1.5">
-                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
                   ₹
                 </span>
                 <input
@@ -307,7 +307,7 @@ export default function OnboardingPage() {
                     key={amt}
                     type="button"
                     onClick={() => setEssentialExpenses(amt)}
-                    className="rounded-lg border border-slate-200 bg-slate-50 dark:border-white/[0.08] dark:bg-slate-900 px-2.5 py-1 text-[11px] font-mono text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                    className="rounded-lg border border-slate-200 bg-slate-50 dark:border-white/[0.08] dark:bg-slate-900 px-2.5 py-1 text-sm font-mono text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                   >
                     ₹{amt / 1000}k
                   </button>
@@ -317,13 +317,13 @@ export default function OnboardingPage() {
 
             <div>
               <div className="flex items-center justify-between">
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                   Monthly EMI / Loan Payments (₹/mo)
                 </label>
-                <span className="text-[11px] text-slate-400">Vehicle, phone, personal</span>
+                <span className="text-sm text-slate-400">Vehicle, phone, personal</span>
               </div>
               <div className="relative mt-1.5">
-                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
                   ₹
                 </span>
                 <input
@@ -342,7 +342,7 @@ export default function OnboardingPage() {
                     key={amt}
                     type="button"
                     onClick={() => setMonthlyEmi(amt)}
-                    className="rounded-lg border border-slate-200 bg-slate-50 dark:border-white/[0.08] dark:bg-slate-900 px-2.5 py-1 text-[11px] font-mono text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                    className="rounded-lg border border-slate-200 bg-slate-50 dark:border-white/[0.08] dark:bg-slate-900 px-2.5 py-1 text-sm font-mono text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                   >
                     {amt === 0 ? "No EMI" : `₹${amt}`}
                   </button>
@@ -363,13 +363,13 @@ export default function OnboardingPage() {
 
           <div>
             <div className="flex items-center justify-between">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                 Liquid Cash & Bank Balance (₹)
               </label>
-              <span className="text-[11px] text-slate-400">Available immediately in case of emergency</span>
+              <span className="text-sm text-slate-400">Available immediately in case of emergency</span>
             </div>
             <div className="relative mt-1.5">
-              <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+              <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
                 ₹
               </span>
               <input
@@ -388,7 +388,7 @@ export default function OnboardingPage() {
                   key={amt}
                   type="button"
                   onClick={() => setCurrentSavings(amt)}
-                  className="rounded-lg border border-slate-200 bg-slate-50 dark:border-white/[0.08] dark:bg-slate-900 px-2.5 py-1 text-[11px] font-mono text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                  className="rounded-lg border border-slate-200 bg-slate-50 dark:border-white/[0.08] dark:bg-slate-900 px-2.5 py-1 text-sm font-mono text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                 >
                   ₹{amt / 1000}k
                 </button>
@@ -406,12 +406,12 @@ export default function OnboardingPage() {
                 4. Recent 6 Months Earnings
               </h2>
             </div>
-            <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
+            <span className="text-sm font-mono text-slate-500 dark:text-slate-400">
               6-Month Average: <strong className="text-emerald-700 dark:text-emerald-400 font-bold">{formatCurrency(avgIncome)}/mo</strong>
             </span>
           </div>
 
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Enter your approximate earnings for each month. Savora calculates your volatility curve to know when to recommend saving vs when to pause.
           </p>
 
@@ -421,16 +421,16 @@ export default function OnboardingPage() {
                 key={item.date}
                 className="rounded-xl border border-slate-200/80 bg-slate-50/70 dark:border-white/[0.06] dark:bg-slate-950/40 p-3.5"
               >
-                <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-400">
+                <div className="flex items-center justify-between text-sm font-semibold text-slate-600 dark:text-slate-400">
                   <span>{item.label}</span>
                   {idx === incomeList.length - 1 && (
-                    <span className="rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 px-2 py-0.5 text-[10px] font-bold">
+                    <span className="rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 px-2 py-0.5 text-sm font-bold">
                       Latest
                     </span>
                   )}
                 </div>
                 <div className="relative mt-2">
-                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
                     ₹
                   </span>
                   <input
@@ -455,7 +455,7 @@ export default function OnboardingPage() {
               <h3 className="text-base font-bold text-slate-950 dark:text-white">
                 Ready to Process Your Resilience Strategy
               </h3>
-              <p className="text-xs font-mono text-slate-600 dark:text-slate-400 mt-0.5">
+              <p className="text-sm font-mono text-slate-600 dark:text-slate-400 mt-0.5">
                 Committed outflow: <strong>{formatCurrency(totalOutflow)}/mo</strong> · Average earnings: <strong>{formatCurrency(avgIncome)}/mo</strong>
               </p>
             </div>

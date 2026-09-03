@@ -59,7 +59,7 @@ export function Navbar() {
               </span>
             </div>
             <span className="text-lg font-black tracking-tight text-slate-950 dark:text-white font-sans">
-              SAVORA<span className="text-emerald-500 dark:text-emerald-400 font-mono text-xs ml-1 font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">v1.2</span>
+              SAVORA<span className="text-emerald-500 dark:text-emerald-400 font-mono text-sm ml-1 font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">v1.2</span>
             </span>
           </Link>
         </div>
@@ -71,7 +71,7 @@ export function Navbar() {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="rounded-xl px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-950 hover:bg-slate-100/70 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/[0.06] transition-all duration-200"
+                  className="rounded-xl px-3.5 py-1.5 text-sm font-semibold text-slate-600 hover:text-slate-950 hover:bg-slate-100/70 dark:text-slate-400 dark:hover:text-white dark:hover:bg-white/[0.06] transition-all duration-200"
                 >
                   {item.label}
                 </a>
@@ -83,7 +83,7 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 ${
+                    className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-sm font-semibold transition-all duration-200 ${
                       isActive
                         ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 shadow-xs shadow-emerald-500/10"
                         : "text-slate-600 hover:bg-slate-100/70 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
@@ -126,8 +126,8 @@ export function Navbar() {
 
           {isAuthenticated && user ? (
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 pl-1 pr-3 py-1 text-xs font-semibold text-slate-800 dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200 shadow-xs">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-bold text-white uppercase dark:bg-emerald-500 shadow-xs">
+              <div className="flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/80 pl-1 pr-3 py-1 text-sm font-semibold text-slate-800 dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200 shadow-xs">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white uppercase dark:bg-emerald-500 shadow-xs">
                   {(user.displayName || "User").charAt(0)}
                 </span>
                 <span className="max-w-[110px] truncate">{user.displayName || "User"}</span>
@@ -135,14 +135,14 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={signOut}
-                className="rounded-lg px-2 py-1 text-xs font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200 transition"
+                className="rounded-lg px-2 py-1 text-sm font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200 transition"
               >
                 Sign Out
               </button>
               {isLandingPage && (
                 <Link
                   href="/dashboard"
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-3 py-1.5 text-xs font-bold text-white shadow-md shadow-emerald-600/20 hover:from-emerald-700 hover:to-teal-700 active:scale-95 transition-all duration-200"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-3 py-1.5 text-sm font-bold text-white shadow-md shadow-emerald-600/20 hover:from-emerald-700 hover:to-teal-700 active:scale-95 transition-all duration-200"
                 >
                   <span>Open Cockpit</span>
                   <ArrowRight className="h-3 w-3" />
@@ -153,13 +153,13 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <a
                 href="#auth"
-                className="rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white transition"
+                className="rounded-xl px-3 py-1.5 text-sm font-semibold text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white transition"
               >
                 Sign In
               </a>
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-md shadow-emerald-600/25 hover:bg-emerald-700 hover:shadow-emerald-600/40 active:scale-95 dark:bg-emerald-500 dark:hover:bg-emerald-600 transition-all duration-200"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-sm font-bold text-white shadow-md shadow-emerald-600/25 hover:bg-emerald-700 hover:shadow-emerald-600/40 active:scale-95 dark:bg-emerald-500 dark:hover:bg-emerald-600 transition-all duration-200"
               >
                 <Zap className="h-3 w-3 fill-current" />
                 <span>Launch App</span>
@@ -167,13 +167,13 @@ export function Navbar() {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Live Engine
               </span>
               <Link
                 href="/#auth"
-                className="rounded-xl bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 active:scale-95 dark:bg-emerald-500 dark:hover:bg-emerald-600 transition"
+                className="rounded-xl bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-emerald-700 active:scale-95 dark:bg-emerald-500 dark:hover:bg-emerald-600 transition"
               >
                 Sign In
               </Link>
@@ -217,7 +217,7 @@ export function Navbar() {
                     key={item.label}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10 transition"
+                    className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10 transition"
                   >
                     {item.label}
                   </a>
@@ -230,7 +230,7 @@ export function Navbar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center gap-3 rounded-xl px-3 py-2 text-xs font-semibold transition ${
+                      className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition ${
                         isActive
                           ? "bg-emerald-500/15 font-bold text-emerald-700 dark:text-emerald-300 border border-emerald-500/30"
                           : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
@@ -246,10 +246,10 @@ export function Navbar() {
               {isAuthenticated && user ? (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white uppercase dark:bg-emerald-500">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white uppercase dark:bg-emerald-500">
                       {(user.displayName || "User").charAt(0)}
                     </span>
-                    <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">{user.displayName || "User"}</span>
+                    <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">{user.displayName || "User"}</span>
                   </div>
                   <button
                     type="button"
@@ -257,7 +257,7 @@ export function Navbar() {
                       signOut();
                       setMobileMenuOpen(false);
                     }}
-                    className="text-xs font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400"
+                    className="text-sm font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400"
                   >
                     Sign Out
                   </button>
@@ -266,7 +266,7 @@ export function Navbar() {
                 <Link
                   href="/dashboard"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full text-center rounded-xl bg-emerald-600 py-2.5 text-xs font-bold text-white shadow-md dark:bg-emerald-500"
+                  className="block w-full text-center rounded-xl bg-emerald-600 py-2.5 text-sm font-bold text-white shadow-md dark:bg-emerald-500"
                 >
                   Launch Live App
                 </Link>

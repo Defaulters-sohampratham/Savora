@@ -181,7 +181,7 @@ export default function LandingPage() {
           <div className="flex justify-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 backdrop-blur-xl shadow-lg shadow-emerald-500/10 dark:border-emerald-500/40 dark:bg-emerald-500/15">
               <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+              <span className="text-sm font-mono font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
                 ✦ Autonomous Resilience Engine v1.2 · Live
               </span>
             </div>
@@ -211,11 +211,11 @@ export default function LandingPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Activity className="h-4 w-4 text-emerald-500 animate-pulse" />
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                    <span className="text-sm font-mono font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                       Live Engine Simulator · Drag to Test
                     </span>
                   </div>
-                  <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
+                  <span className="text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
                     Real-time Reaction
                   </span>
                 </div>
@@ -223,7 +223,7 @@ export default function LandingPage() {
                 {/* Interactive Slider Input */}
                 <div className="space-y-2">
                   <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Monthly Platform Income:</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">Monthly Platform Income:</span>
                     <span className="text-3xl sm:text-4xl font-black font-mono tracking-tight text-slate-950 dark:text-white">
                       {formatCurrency(heroIncome)}
                     </span>
@@ -237,9 +237,9 @@ export default function LandingPage() {
                     onChange={(e) => setHeroIncome(Number(e.target.value))}
                     className="cursor-pointer"
                   />
-                  <div className="flex justify-between text-[10px] font-mono text-slate-400 dark:text-slate-500">
+                  <div className="flex justify-between text-sm font-mono font-medium text-slate-500 dark:text-slate-400">
                     <span>₹14,000 (Lean Valley)</span>
-                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">Baseline Floor: ₹21,500</span>
+                    <span className="font-bold text-emerald-700 dark:text-emerald-400">Baseline Floor: ₹21,500</span>
                     <span>₹60,000 (Surge Peak)</span>
                   </div>
                 </div>
@@ -248,7 +248,7 @@ export default function LandingPage() {
                 <div className="grid grid-cols-3 gap-3 pt-2">
                   {/* Metric 1 */}
                   <div className="rounded-2xl bg-slate-100/70 dark:bg-white/[0.04] p-4 border border-slate-200/80 dark:border-white/[0.06] text-center">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+                    <span className="text-sm font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 block">
                       Auto-Save
                     </span>
                     <p className={`mt-1 text-xl sm:text-2xl font-black font-mono tabular-nums ${
@@ -260,7 +260,7 @@ export default function LandingPage() {
 
                   {/* Metric 2 */}
                   <div className="rounded-2xl bg-slate-100/70 dark:bg-white/[0.04] p-4 border border-slate-200/80 dark:border-white/[0.06] text-center">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+                    <span className="text-sm font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 block">
                       Safe Flexible Cash
                     </span>
                     <p className="mt-1 text-xl sm:text-2xl font-black font-mono tabular-nums text-slate-900 dark:text-slate-100">
@@ -270,22 +270,22 @@ export default function LandingPage() {
 
                   {/* Metric 3 */}
                   <div className="rounded-2xl bg-slate-100/70 dark:bg-white/[0.04] p-4 border border-slate-200/80 dark:border-white/[0.06] text-center">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+                    <span className="text-sm font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 block">
                       Buffer Runway
                     </span>
                     <p className="mt-1 text-xl sm:text-2xl font-black font-mono tabular-nums text-teal-600 dark:text-teal-400">
-                      {heroRunway} <span className="text-xs font-semibold">mo</span>
+                      {heroRunway} <span className="text-sm font-semibold">mo</span>
                     </p>
                   </div>
                 </div>
 
                 {/* Real-time Narrative Callout */}
-                <div className={`rounded-xl p-3.5 text-xs leading-relaxed font-mono flex items-start gap-2.5 transition-colors duration-200 ${
+                <div className={`rounded-xl p-4 text-sm leading-relaxed flex items-start gap-3 transition-colors duration-200 ${
                   heroIncome < heroEssential
-                    ? "bg-rose-500/10 text-rose-800 dark:text-rose-300 border border-rose-500/30"
+                    ? "bg-rose-500/10 text-rose-900 dark:text-rose-200 border border-rose-500/30"
                     : heroIncome > 35000
-                      ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30"
-                      : "bg-teal-500/10 text-teal-800 dark:text-teal-300 border border-teal-500/30"
+                      ? "bg-emerald-500/10 text-emerald-900 dark:text-emerald-200 border border-emerald-500/30"
+                      : "bg-teal-500/10 text-teal-900 dark:text-teal-200 border border-teal-500/30"
                 }`}>
                   <Sparkles className="h-4 w-4 shrink-0 mt-0.5" />
                   <span>
@@ -325,7 +325,7 @@ export default function LandingPage() {
       <section id="problem" className="py-20 border-y border-slate-200/80 dark:border-white/[0.08] relative">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+            <span className="text-sm font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
               Why Traditional Banking Fails Gig Workers
             </span>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white">
@@ -337,7 +337,7 @@ export default function LandingPage() {
             {/* The Trap Box */}
             <div className="glass-cockpit rounded-3xl p-8 neon-border-rose relative overflow-hidden space-y-5">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/30 px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/30 px-3 py-1 text-sm font-bold uppercase tracking-wider">
                   <ShieldAlert className="h-3.5 w-3.5" />
                   The Broken Status Quo
                 </span>
@@ -350,14 +350,14 @@ export default function LandingPage() {
               </p>
 
               {/* Visual Flow diagram */}
-              <div className="space-y-2 pt-2 text-xs font-mono">
-                <div className="p-3 rounded-xl bg-rose-500/5 border border-rose-500/20 text-rose-800 dark:text-rose-300">
+              <div className="space-y-2 pt-2 text-sm">
+                <div className="p-3.5 rounded-xl bg-rose-500/5 border border-rose-500/20 text-rose-900 dark:text-rose-300 font-medium">
                   ⚡ 1. Platform income drops unexpectedly by 30%
                 </div>
-                <div className="p-3 rounded-xl bg-rose-500/5 border border-rose-500/20 text-rose-800 dark:text-rose-300">
+                <div className="p-3.5 rounded-xl bg-rose-500/5 border border-rose-500/20 text-rose-900 dark:text-rose-300 font-medium">
                   💸 2. Fixed bank debit bounces or hits penalties
                 </div>
-                <div className="p-3 rounded-xl bg-rose-500/5 border border-rose-500/20 text-rose-800 dark:text-rose-300">
+                <div className="p-3.5 rounded-xl bg-rose-500/5 border border-rose-500/20 text-rose-900 dark:text-rose-300 font-medium">
                   🪤 3. Worker borrows predatory short-term emergency cash
                 </div>
               </div>
@@ -366,8 +366,8 @@ export default function LandingPage() {
             {/* The Savora Solution Box */}
             <div className="glass-cockpit rounded-3xl p-8 neon-border-emerald relative overflow-hidden space-y-5">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-3 py-1 text-xs font-bold uppercase tracking-wider">
-                  <Zap className="h-3.5 w-3.5" />
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 px-3.5 py-1 text-sm font-bold uppercase tracking-wider">
+                  <Zap className="h-4 w-4" />
                   The Savora Architecture
                 </span>
               </div>
@@ -379,14 +379,14 @@ export default function LandingPage() {
               </p>
 
               {/* Visual Flow diagram */}
-              <div className="space-y-2 pt-2 text-xs font-mono">
-                <div className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300">
+              <div className="space-y-2 pt-2 text-sm">
+                <div className="p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-900 dark:text-emerald-300 font-medium">
                   🛡️ 1. Dynamic sensing tracks cashflow changes every cycle
                 </div>
-                <div className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300">
+                <div className="p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-900 dark:text-emerald-300 font-medium">
                   📊 2. Savings dynamically scale down to guarantee essentials
                 </div>
-                <div className="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-800 dark:text-emerald-300">
+                <div className="p-3.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-900 dark:text-emerald-300 font-medium">
                   🚀 3. Surge months feed a 3-month emergency runway buffer
                 </div>
               </div>
@@ -401,14 +401,14 @@ export default function LandingPage() {
       <section id="auth" className="py-20 border-t border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-[#050c0e] relative">
         <div className="mx-auto max-w-xl px-4 sm:px-6 space-y-8">
           <div className="text-center space-y-2.5">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-mono font-bold text-emerald-800 dark:text-emerald-300 shadow-sm">
-              <Lock className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-mono font-bold text-emerald-800 dark:text-emerald-300 shadow-sm">
+              <Lock className="h-4 w-4" />
               <span>Zero Bank Credentials Required · 100% Free</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-950 dark:text-white">
               Get Your Personal Safety Plan
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-md mx-auto">
               Takes 60 seconds to configure. Your cashflow inputs calculate your emergency buffer runway immediately.
             </p>
           </div>
@@ -419,7 +419,7 @@ export default function LandingPage() {
 
             {/* Pill Tab Switcher */}
             <div className="p-3 bg-slate-50 dark:bg-slate-950/80 border-b border-slate-200 dark:border-white/10">
-              <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-slate-200/90 dark:bg-slate-900 p-1.5 text-xs font-bold font-mono">
+              <div className="grid grid-cols-2 gap-1.5 rounded-2xl bg-slate-200/90 dark:bg-slate-900 p-1.5 text-sm font-bold">
                 <button
                   type="button"
                   onClick={() => setAuthMode("signup")}
@@ -451,20 +451,20 @@ export default function LandingPage() {
                 <div className="rounded-2xl bg-emerald-500/10 border border-emerald-500/30 p-6 text-center space-y-4">
                   <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
                   <h3 className="text-lg font-black text-slate-950 dark:text-white">You are signed in</h3>
-                  <p className="text-xs font-mono text-slate-600 dark:text-slate-300">
+                  <p className="text-sm font-mono text-slate-600 dark:text-slate-300">
                     Logged in as <strong>{user.displayName}</strong> ({user.role})
                   </p>
                   <div className="flex flex-wrap justify-center gap-3 pt-2">
                     <Link
                       href="/onboarding"
-                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-md hover:bg-emerald-700 transition"
+                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-md hover:bg-emerald-700 transition"
                     >
                       <span>Update Cashflow Inputs</span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                     <Link
                       href="/dashboard"
-                      className="inline-flex items-center gap-2 rounded-xl glass-cockpit px-4 py-2.5 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:text-emerald-500 transition"
+                      className="inline-flex items-center gap-2 rounded-xl glass-cockpit px-4 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-emerald-500 transition"
                     >
                       <span>Open Cockpit</span>
                     </Link>
@@ -474,19 +474,19 @@ export default function LandingPage() {
                 <div className="rounded-2xl bg-emerald-500/10 border border-emerald-500/30 p-6 text-center space-y-3">
                   <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-500" />
                   <h3 className="text-lg font-bold text-emerald-950 dark:text-emerald-200">Success!</h3>
-                  <p className="text-xs text-emerald-800 dark:text-emerald-300">{authSuccess}</p>
+                  <p className="text-sm text-emerald-800 dark:text-emerald-300">{authSuccess}</p>
                 </div>
               ) : (
                 <form onSubmit={handleAuthSubmit} className="space-y-4">
                   {authError && (
-                    <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-xs font-mono text-rose-800 dark:text-rose-300">
+                    <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-sm font-mono text-rose-800 dark:text-rose-300">
                       {authError}
                     </div>
                   )}
 
                   {authMode === "signup" && (
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      <label className="block text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                         Full Name
                       </label>
                       <input
@@ -495,13 +495,13 @@ export default function LandingPage() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="e.g. Ramesh Chandra"
-                        className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-950 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 transition"
+                        className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm sm:text-base font-semibold text-slate-950 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 transition"
                       />
                     </div>
                   )}
 
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                    <label className="block text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                       Phone Number or Work Email
                     </label>
                     <input
@@ -510,19 +510,19 @@ export default function LandingPage() {
                       value={formData.contact}
                       onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
                       placeholder="9876543210 or name@work.com"
-                      className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-950 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 transition"
+                      className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm sm:text-base font-semibold text-slate-950 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 transition"
                     />
                   </div>
 
                   {authMode === "signup" && (
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      <label className="block text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                         Primary Platform / Gig
                       </label>
                       <select
                         value={formData.category}
                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-950 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:focus:border-emerald-400 transition"
+                        className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm sm:text-base font-semibold text-slate-950 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:focus:border-emerald-400 transition"
                       >
                         <option value="Rideshare (Uber, Ola)">Rideshare (Uber, Ola, Rapido)</option>
                         <option value="Delivery (Zomato, Swiggy)">Food Delivery (Zomato, Swiggy)</option>
@@ -533,7 +533,7 @@ export default function LandingPage() {
                   )}
 
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                    <label className="block text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                       Secret Passcode
                     </label>
                     <input
@@ -542,18 +542,18 @@ export default function LandingPage() {
                       value={formData.pass}
                       onChange={(e) => setFormData({ ...formData, pass: e.target.value })}
                       placeholder="••••••••"
-                      className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-950 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 transition"
+                      className="mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm sm:text-base font-semibold text-slate-950 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:outline-none dark:border-white/15 dark:bg-[#0c1813] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-emerald-400 transition"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={authLoading}
-                    className="w-full rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-700 hover:to-teal-700 py-4 text-sm font-black text-white shadow-xl shadow-emerald-500/25 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
+                    className="w-full rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-700 hover:to-teal-700 py-4 text-base font-black text-white shadow-xl shadow-emerald-500/25 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
                   >
                     {authLoading ? (
                       <span className="flex items-center justify-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <Loader2 className="h-5 w-5 animate-spin" />
                         <span>Processing securely...</span>
                       </span>
                     ) : authMode === "signup" ? (
@@ -566,12 +566,12 @@ export default function LandingPage() {
               )}
             </div>
 
-            <div className="border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#060e0a] px-6 py-4 text-xs font-mono text-slate-600 dark:text-slate-300 flex items-center justify-between">
-              <span className="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200">
+            <div className="border-t border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-[#060e0a] px-6 py-4 text-sm font-medium text-slate-600 dark:text-slate-300 flex items-center justify-between">
+              <span className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
                 <ShieldCheck className="h-4 w-4 text-emerald-500" />
                 Bank-Grade Local Privacy
               </span>
-              <span>Zero harvesting</span>
+              <span className="font-mono text-sm">Zero harvesting</span>
             </div>
           </div>
         </div>
@@ -583,8 +583,8 @@ export default function LandingPage() {
       <section id="demo" className="py-24 border-t border-slate-200/80 dark:border-white/[0.08] relative overflow-hidden">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="text-center max-w-3xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-mono font-bold text-emerald-700 dark:text-emerald-300">
-              <Layers className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-sm font-mono font-bold text-emerald-800 dark:text-emerald-300">
+              <Layers className="h-4 w-4" />
               <span>Multi-Persona Resilience Terminal</span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-950 dark:text-white">
@@ -613,21 +613,21 @@ export default function LandingPage() {
                   }`}
                 >
                   {isSelected && (
-                    <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-white shadow-sm">
+                    <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-emerald-500 px-2.5 py-0.5 text-sm font-mono font-bold uppercase tracking-wider text-white shadow-sm">
                       ● Active Cockpit
                     </span>
                   )}
 
                   <h3 className="text-xl font-bold text-slate-950 dark:text-white">{p.name}</h3>
-                  <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                  <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 mt-0.5">
                     {p.role} · {p.city}
                   </p>
-                  <p className="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">
                     {p.description}
                   </p>
 
-                  <div className="mt-5 border-t border-slate-200/80 dark:border-white/[0.08] pt-3 flex justify-between text-xs font-mono">
-                    <span className="text-slate-400">Committed Outflow:</span>
+                  <div className="mt-5 border-t border-slate-200/80 dark:border-white/[0.08] pt-3 flex justify-between text-sm font-mono">
+                    <span className="text-slate-500">Committed Outflow:</span>
                     <span className="font-bold text-slate-950 dark:text-white">{formatCurrency(totalOut)}/mo</span>
                   </div>
                 </button>
@@ -645,20 +645,20 @@ export default function LandingPage() {
                   <span className="h-3 w-3 rounded-full bg-amber-500/80" />
                   <span className="h-3 w-3 rounded-full bg-emerald-500/80" />
                 </div>
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <span className="text-sm font-mono font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                   Target Profile: {activeDemoProfile.name}
                 </span>
               </div>
 
               {/* Stress Drop Level Buttons */}
               <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-200/80 dark:bg-slate-900 border border-slate-300/50 dark:border-white/[0.08]">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 px-2">
+                <span className="text-sm font-mono font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 px-2">
                   Inject Shock:
                 </span>
                 <button
                   type="button"
                   onClick={() => setStressLevel(0)}
-                  className={`px-3 py-1 text-xs font-mono font-bold rounded-lg transition ${
+                  className={`px-3 py-1.5 text-sm font-mono font-bold rounded-lg transition ${
                     stressLevel === 0
                       ? "bg-emerald-600 text-white shadow-xs"
                       : "text-slate-600 dark:text-slate-400 hover:text-white"
@@ -669,7 +669,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setStressLevel(20)}
-                  className={`px-3 py-1 text-xs font-mono font-bold rounded-lg transition ${
+                  className={`px-3 py-1.5 text-sm font-mono font-bold rounded-lg transition ${
                     stressLevel === 20
                       ? "bg-amber-600 text-white shadow-xs"
                       : "text-slate-600 dark:text-slate-400 hover:text-white"
@@ -680,7 +680,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setStressLevel(40)}
-                  className={`px-3 py-1 text-xs font-mono font-bold rounded-lg transition ${
+                  className={`px-3 py-1.5 text-sm font-mono font-bold rounded-lg transition ${
                     stressLevel === 40
                       ? "bg-rose-600 text-white shadow-xs"
                       : "text-slate-600 dark:text-slate-400 hover:text-white"
@@ -697,16 +697,16 @@ export default function LandingPage() {
                 {/* Left: Huge Saving Action Metric */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-2">
-                    <span className={`inline-flex items-center rounded-full px-3.5 py-1 text-xs font-mono font-bold ring-1 ${demoStateStyle.badge}`}>
+                    <span className={`inline-flex items-center rounded-full px-3.5 py-1 text-sm font-mono font-bold ring-1 ${demoStateStyle.badge}`}>
                       {demoStateStyle.label}
                     </span>
-                    <span className="text-xs font-mono text-slate-500">
-                      Confidence: <strong>{demoResult.confidence}</strong>
+                    <span className="text-sm font-mono text-slate-500">
+                      Confidence: <strong className="text-slate-800 dark:text-slate-200">{demoResult.confidence}</strong>
                     </span>
                   </div>
 
                   <div>
-                    <span className="text-xs font-mono uppercase tracking-wider text-slate-500">
+                    <span className="text-sm font-mono uppercase font-bold tracking-wider text-slate-500">
                       Recommended Action This Cycle
                     </span>
                     <p className="mt-1 text-4xl sm:text-6xl font-black font-mono tracking-tight text-slate-950 dark:text-emerald-300">
@@ -720,16 +720,16 @@ export default function LandingPage() {
                     </p>
                   </div>
 
-                  <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300 max-w-xl">
+                  <p className="text-base leading-relaxed text-slate-750 dark:text-slate-300 max-w-xl">
                     {stressLevel > 0 ? demoScenarioExplanation : demoExplanation}
                   </p>
                 </div>
 
                 {/* Right: Runway Buffer Gauge */}
                 <div className="rounded-3xl p-6 bg-slate-100/60 dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/[0.08] space-y-4">
-                  <div className="flex items-center justify-between text-xs font-mono uppercase font-bold tracking-wider">
-                    <span className="text-slate-600 dark:text-slate-400">Emergency Buffer Runway</span>
-                    <span className="text-emerald-600 dark:text-emerald-400">{demoBufferPercent}% of Target</span>
+                  <div className="flex items-center justify-between text-sm font-mono uppercase font-bold tracking-wider">
+                    <span className="text-slate-700 dark:text-slate-300">Emergency Buffer Runway</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">{demoBufferPercent}% of Target</span>
                   </div>
 
                   {/* Progress bar */}
@@ -740,40 +740,40 @@ export default function LandingPage() {
                     />
                   </div>
 
-                  <div className="flex justify-between text-xs font-mono text-slate-500">
+                  <div className="flex justify-between text-sm font-mono text-slate-500 dark:text-slate-400">
                     <span>Saved: {formatCurrency(activeDemoProfile.currentSavings)}</span>
                     <span>3-Month Target: {formatCurrency(demoResult.buffer_target)}</span>
                   </div>
 
-                  <div className="pt-2 flex items-center justify-between border-t border-slate-200/60 dark:border-white/[0.06] text-xs font-mono">
+                  <div className="pt-2 flex items-center justify-between border-t border-slate-200/60 dark:border-white/[0.06] text-sm font-mono">
                     <span className="text-slate-500">Zero-Income Runway:</span>
-                    <span className="font-bold text-slate-900 dark:text-white text-sm">{demoResult.runway_months} Months</span>
+                    <span className="font-bold text-slate-900 dark:text-white text-base">{demoResult.runway_months} Months</span>
                   </div>
                 </div>
               </div>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center justify-between gap-4 border-t border-slate-200/60 dark:border-white/[0.08] pt-6">
-                <span className="text-xs font-mono text-slate-500">
+                <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
                   View full cashflow tables and forecasting charts:
                 </span>
                 <div className="flex flex-wrap gap-3">
                   <Link
                     href="/dashboard"
-                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-emerald-600/20 hover:bg-emerald-700 active:scale-95 transition"
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-emerald-600/20 hover:bg-emerald-700 active:scale-95 transition"
                   >
                     <span>Launch Full Cockpit</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
                     href="/outputs"
-                    className="inline-flex items-center gap-2 rounded-xl glass-cockpit px-4 py-2.5 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-emerald-500 active:scale-95 transition"
+                    className="inline-flex items-center gap-2 rounded-xl glass-cockpit px-4 py-2.5 text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-emerald-500 active:scale-95 transition"
                   >
                     <span>What-If Stress Lab</span>
                   </Link>
                   <Link
                     href="/insights"
-                    className="inline-flex items-center gap-2 rounded-xl glass-cockpit px-4 py-2.5 text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-emerald-500 active:scale-95 transition"
+                    className="inline-flex items-center gap-2 rounded-xl glass-cockpit px-4 py-2.5 text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-emerald-500 active:scale-95 transition"
                   >
                     <span>Predictive Trends</span>
                   </Link>
@@ -788,7 +788,7 @@ export default function LandingPage() {
       {/* 5. FOOTER: High-Tech FinTech Closing                                      */}
       {/* ========================================================================= */}
       <footer className="border-t border-slate-200/80 dark:border-white/[0.08] bg-white dark:bg-[#020506] py-12">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs font-mono text-slate-500">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-sm font-medium text-slate-500">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-950 dark:text-white">SAVORA TECHNOLOGIES</span>
             <span>·</span>

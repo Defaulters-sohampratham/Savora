@@ -114,11 +114,11 @@ export function SavoraDashboard({ profiles }: { profiles: WorkerProfile[] }) {
                   <span className="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
                     Savora
                   </span>
-                  <span className="rounded-full border border-teal-200 bg-teal-50 px-2.5 py-0.5 text-xs font-semibold text-teal-800">
+                  <span className="rounded-full border border-teal-200 bg-teal-50 px-2.5 py-0.5 text-sm font-semibold text-teal-800">
                     Resilience Check
                   </span>
                 </div>
-                <p className="text-xs font-medium text-slate-500 sm:text-sm">
+                <p className="text-sm font-medium text-slate-500">
                   Financial safety & adaptive buffer engine
                 </p>
               </div>
@@ -181,7 +181,7 @@ export function SavoraDashboard({ profiles }: { profiles: WorkerProfile[] }) {
           <section className={`rounded-lg border bg-white p-5 shadow-sm ${stateStyle.border}`}>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">
                   Current state
                 </p>
                 <div className="mt-3 flex flex-wrap items-center gap-3">
@@ -205,7 +205,7 @@ export function SavoraDashboard({ profiles }: { profiles: WorkerProfile[] }) {
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">
                   Recommended saving this cycle
                 </p>
                 <p className="mt-3 text-4xl font-semibold text-slate-950">
@@ -241,7 +241,7 @@ export function SavoraDashboard({ profiles }: { profiles: WorkerProfile[] }) {
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">
                   What-if simulation
                 </p>
                 <h2 className="mt-2 text-xl font-semibold text-slate-950">
@@ -276,7 +276,7 @@ export function SavoraDashboard({ profiles }: { profiles: WorkerProfile[] }) {
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">
                   Emergency buffer
                 </p>
                 <h2 className="mt-2 text-xl font-semibold text-slate-950">
@@ -303,7 +303,7 @@ export function SavoraDashboard({ profiles }: { profiles: WorkerProfile[] }) {
           </section>
 
           <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-            <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+            <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">
               Income history
             </p>
             <div className="mt-4 space-y-3">
@@ -384,7 +384,7 @@ function SummaryCards({ result, profile }: { result: CalculationResult; profile:
 function MetricLine({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-      <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">{label}</p>
+      <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">{label}</p>
       <p className="mt-2 text-lg font-semibold text-slate-950">{value}</p>
     </div>
   );
@@ -401,7 +401,7 @@ function ForecastSection({ result }: { result: CalculationResult }) {
     <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+          <p className="text-sm font-semibold uppercase tracking-widest text-slate-500">
             Income forecast
           </p>
           <h2 className="mt-2 text-xl font-semibold text-slate-950">

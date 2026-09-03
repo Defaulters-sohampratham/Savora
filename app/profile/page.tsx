@@ -35,26 +35,26 @@ export default function ProfilePage() {
       <section className="glass-card relative overflow-hidden rounded-2xl p-6 sm:p-7 border border-slate-200/90 dark:border-white/[0.08] shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-sm font-semibold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300">
               <User className="h-3.5 w-3.5" aria-hidden="true" />
               <span>{isAuthenticated ? "Verified Worker Profile" : "Demo Profile & Baseline"}</span>
             </div>
             <h1 className="mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white">
               {isAuthenticated && user ? user.displayName : selectedProfile.name}
             </h1>
-            <p className="mt-1 text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+            <p className="mt-1 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
               {selectedProfile.role} · {selectedProfile.city}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2.5">
             <Link
               href="/onboarding"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-500/20 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300 dark:hover:bg-emerald-500/25 transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-500/20 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300 dark:hover:bg-emerald-500/25 transition cursor-pointer"
             >
-              <Edit3 className="h-3.5 w-3.5" />
+              <Edit3 className="h-4 w-4" />
               <span>Edit Cashflow Inputs</span>
             </Link>
-            <div className="flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white/70 dark:border-white/[0.08] dark:bg-slate-900/80 px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 font-mono">
+            <div className="flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white/70 dark:border-white/[0.08] dark:bg-slate-900/80 px-3.5 py-2 text-sm text-slate-700 dark:text-slate-300 font-mono">
               <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               <span>
                 ID:{" "}
@@ -65,7 +65,7 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
-        <p className="mt-3 max-w-3xl text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+        <p className="mt-3 max-w-3xl text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-400">
           {selectedProfile.description}
         </p>
       </section>
@@ -73,7 +73,7 @@ export default function ProfilePage() {
       {/* When NOT authenticated: Show demo persona comparisons */}
       {!isAuthenticated && (
         <section className="space-y-4">
-          <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Compare Demo Worker Personas
           </h2>
           <div className="grid gap-4 md:grid-cols-3">
@@ -93,7 +93,7 @@ export default function ProfilePage() {
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="text-base font-bold text-slate-950 dark:text-white">{profile.name}</p>
-                      <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 mt-0.5">
+                      <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 mt-0.5">
                         {profile.role} · {profile.city}
                       </p>
                     </div>
@@ -103,10 +103,10 @@ export default function ProfilePage() {
                       }`}
                     />
                   </div>
-                  <p className="mt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-2">
                     {profile.description}
                   </p>
-                  <div className="mt-4 flex items-center justify-between border-t border-slate-100 dark:border-white/[0.06] pt-3 text-xs">
+                  <div className="mt-4 flex items-center justify-between border-t border-slate-100 dark:border-white/[0.06] pt-3 text-sm">
                     <span className="text-slate-500 dark:text-slate-400">Committed Outflow:</span>
                     <span className="font-mono font-bold tabular-nums text-slate-950 dark:text-white">
                       {formatCurrency(profile.essentialExpenses + profile.monthlyEmi)}/mo
@@ -123,18 +123,18 @@ export default function ProfilePage() {
       {isAuthenticated && user && (
         <section className="glass-card rounded-2xl border border-slate-200/90 dark:border-white/[0.08] p-6 shadow-sm">
           <div className="flex items-center justify-between">
-            <h2 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
               Account Credentials & Cloud Sync
             </h2>
             <Link
               href="/onboarding"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
             >
               <Edit3 className="h-3 w-3" />
               <span>Update Cashflow Inputs</span>
             </Link>
           </div>
-          <div className="mt-3 grid gap-4 sm:grid-cols-3 text-xs">
+          <div className="mt-3 grid gap-4 sm:grid-cols-3 text-sm">
             <div>
               <span className="text-slate-500 dark:text-slate-400 block font-medium">Registered Email:</span>
               <span className="font-semibold text-slate-900 dark:text-white mt-0.5 block">{user.email || "Not specified"}</span>
@@ -158,7 +158,7 @@ export default function ProfilePage() {
       <section className="space-y-4">
         <div>
           <h2 className="text-lg font-bold text-slate-950 dark:text-white">Monthly Outflow & Debt Obligations</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Committed baseline expenses that must be cleared each month.
           </p>
         </div>
@@ -166,7 +166,7 @@ export default function ProfilePage() {
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="glass-card glass-card-interactive rounded-2xl p-5 border border-slate-200/90 dark:border-white/[0.08] shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Essential Living Costs
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
@@ -176,14 +176,14 @@ export default function ProfilePage() {
             <p className="mt-3 text-2xl sm:text-3xl font-extrabold font-mono tabular-nums tracking-tight text-slate-950 dark:text-white">
               {formatCurrency(selectedProfile.essentialExpenses)}
             </p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Rent, food, utilities, fuel, platform costs
             </p>
           </div>
 
           <div className="glass-card glass-card-interactive rounded-2xl p-5 border border-slate-200/90 dark:border-white/[0.08] shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Monthly EMI / Loans
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
@@ -193,14 +193,14 @@ export default function ProfilePage() {
             <p className="mt-3 text-2xl sm:text-3xl font-extrabold font-mono tabular-nums tracking-tight text-slate-950 dark:text-white">
               {formatCurrency(selectedProfile.monthlyEmi)}
             </p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Vehicle loans, personal finance, micro-credit
             </p>
           </div>
 
           <div className="glass-card glass-card-interactive rounded-2xl p-5 border border-slate-200/90 dark:border-white/[0.08] shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Total Committed Outflow
               </span>
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
@@ -210,7 +210,7 @@ export default function ProfilePage() {
             <p className="mt-3 text-2xl sm:text-3xl font-extrabold font-mono tabular-nums tracking-tight text-slate-950 dark:text-white">
               {formatCurrency(totalCommittedOutflow)}
             </p>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 font-mono">
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 font-mono">
               Daily Break-even: ~{formatCurrency(dailyBreakeven)}/day
             </p>
           </div>
@@ -222,18 +222,18 @@ export default function ProfilePage() {
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-lg font-bold text-slate-950 dark:text-white">6-Month Income History Log</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Recorded earnings cycles used by Savora to calculate volatility and resilience state.
             </p>
           </div>
-          <div className="text-xs font-mono font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/[0.08] rounded-xl px-3.5 py-1.5 self-start sm:self-auto shadow-2xs">
+          <div className="text-sm font-mono font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-white/[0.08] rounded-xl px-3.5 py-1.5 self-start sm:self-auto shadow-2xs">
             Baseline Average: <strong className="text-slate-950 dark:text-white">{formatCurrency(result.average_income)}</strong>
           </div>
         </div>
 
         <div className="overflow-x-auto rounded-xl border border-slate-200/80 dark:border-white/[0.08]">
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50/80 dark:bg-slate-950/60 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-slate-200/80 dark:border-white/[0.06]">
+            <thead className="bg-slate-50/80 dark:bg-slate-950/60 text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-slate-200/80 dark:border-white/[0.06]">
               <tr>
                 <th className="px-4 py-3">Cycle Month</th>
                 <th className="px-4 py-3">Earnings Amount</th>
@@ -256,7 +256,7 @@ export default function ProfilePage() {
                     <td className="px-4 py-3 font-bold text-slate-950 dark:text-white">
                       {formatCurrency(record.amount)}
                     </td>
-                    <td className="px-4 py-3 text-xs font-sans">
+                    <td className="px-4 py-3 text-sm font-sans">
                       <span
                         className={`font-semibold ${
                           diffFromEssentials >= 0 ? "text-emerald-700 dark:text-emerald-400" : "text-rose-700 dark:text-rose-400"
@@ -266,13 +266,13 @@ export default function ProfilePage() {
                         {formatCurrency(diffFromEssentials)}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-xs text-slate-500 dark:text-slate-400">
+                    <td className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">
                       {percentOfAvg}% ({diffFromAvg >= 0 ? "+" : ""}
                       {formatCurrency(diffFromAvg)})
                     </td>
                     <td className="px-4 py-3 font-sans">
                       <span
-                        className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        className={`inline-flex rounded-full px-2.5 py-0.5 text-sm font-semibold ${
                           percentOfAvg >= 115
                             ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20"
                             : percentOfAvg < 70
@@ -299,7 +299,7 @@ export default function ProfilePage() {
       <section className="glass-card rounded-2xl border border-slate-200/90 dark:border-white/[0.08] p-5 shadow-sm">
         <div className="flex items-start gap-3">
           <Database className="mt-0.5 h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0" aria-hidden="true" />
-          <div className="space-y-1 text-xs">
+          <div className="space-y-1 text-sm">
             <h3 className="font-bold text-slate-900 dark:text-white">Supabase Schema Readiness</h3>
             <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
               This worker data is formatted to map directly to the connected Supabase tables:{" "}
