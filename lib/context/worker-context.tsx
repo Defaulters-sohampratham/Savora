@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { demoProfiles } from "@/lib/finance/demo-profiles";
 import {
   calculateFinancialResilience,
@@ -12,6 +19,7 @@ import type {
   FinancialState,
   WorkerProfile,
 } from "@/lib/finance/types";
+import { getUserAction, signOutAction } from "@/app/auth/actions";
 
 export const stateStyles: Record<
   FinancialState,
@@ -63,8 +71,16 @@ export function formatMonth(date: string) {
   return monthFormatter.format(new Date(date));
 }
 
+export interface AuthUser {
+  id: string;
+  email?: string;
+  displayName: string;
+  role: string;
+}
+
 interface WorkerContextValue {
   profiles: WorkerProfile[];
+  demoProfiles: WorkerProfile[];
   selectedProfile: WorkerProfile;
   selectedProfileId: string;
   setSelectedProfileId: (id: string) => void;
@@ -73,26 +89,104 @@ interface WorkerContextValue {
   scenarioExplanation: string;
   bufferPercent: number;
   stateStyle: (typeof stateStyles)[FinancialState];
+  user: AuthUser | null;
+  isAuthenticated: boolean;
+  refreshUser: () => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const WorkerContext = createContext<WorkerContextValue | null>(null);
 
 export function WorkerProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [selectedProfileId, setSelectedProfileId] = useState<string>(
-    demoProfiles[0]?.id ?? "",
+    demoProfiles[0]?.id ?? ""
   );
 
-  const selectedProfile = useMemo(
-    () =>
-      demoProfiles.find((profile) => profile.id === selectedProfileId) ??
-      demoProfiles[0],
-    [selectedProfileId],
-  );
+  const refreshUser = useCallback(async () => {
+    try {
+      const res = await getUserAction();
+      if (res.authenticated && res.user) {
+        setUser(res.user);
+        setSelectedProfileId(`user-${res.user.id}`);
+      } else {
+        setUser(null);
+      }
+    } catch {
+      setUser(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    getUserAction()
+      .then((res) => {
+        if (!isMounted) return;
+        if (res.authenticated && res.user) {
+          setUser(res.user);
+          setSelectedProfileId(`user-${res.user.id}`);
+        } else {
+          setUser(null);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setUser(null);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const signOut = useCallback(async () => {
+    await signOutAction();
+    setUser(null);
+    setSelectedProfileId(demoProfiles[0]?.id ?? "");
+  }, []);
+
+  // When authenticated, only the logged-in user's profile exists in the app.
+  // When logged out, demoProfiles are provided.
+  const profiles = useMemo<WorkerProfile[]>(() => {
+    if (!user) {
+      return demoProfiles;
+    }
+
+    const userProfile: WorkerProfile = {
+      id: `user-${user.id}`,
+      name: user.displayName,
+      role: user.role || "Gig Partner",
+      city: "Bengaluru",
+      essentialExpenses: 18000,
+      monthlyEmi: 3500,
+      currentSavings: 14000,
+      monthlyIncome: [
+        { date: "2026-03-31", amount: 26000 },
+        { date: "2026-04-30", amount: 28500 },
+        { date: "2026-05-31", amount: 24000 },
+        { date: "2026-06-30", amount: 31000 },
+        { date: "2026-07-31", amount: 29000 },
+        { date: "2026-08-31", amount: 32500 },
+      ],
+      description: `Active personal profile for ${user.displayName}. Live calculated resilience based on recent earnings.`,
+    };
+
+    return [userProfile];
+  }, [user]);
+
+  const selectedProfile = useMemo(() => {
+    if (user && profiles.length > 0) {
+      return profiles[0];
+    }
+    return (
+      profiles.find((profile) => profile.id === selectedProfileId) ??
+      profiles[0] ??
+      demoProfiles[0]
+    );
+  }, [user, profiles, selectedProfileId]);
 
   const result = useMemo(
-    () =>
-      calculateFinancialResilience(profileToCalculationInput(selectedProfile)),
-    [selectedProfile],
+    () => calculateFinancialResilience(profileToCalculationInput(selectedProfile)),
+    [selectedProfile]
   );
 
   const explanation = useMemo(() => explainRecommendation(result), [result]);
@@ -100,7 +194,7 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
 
   const bufferPercent = Math.min(
     100,
-    Math.round((selectedProfile.currentSavings / result.buffer_target) * 100),
+    Math.round((selectedProfile.currentSavings / result.buffer_target) * 100)
   );
 
   const stateStyle = stateStyles[result.state];
@@ -108,7 +202,8 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
   return (
     <WorkerContext.Provider
       value={{
-        profiles: demoProfiles,
+        profiles,
+        demoProfiles,
         selectedProfile,
         selectedProfileId,
         setSelectedProfileId,
@@ -117,6 +212,10 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
         scenarioExplanation,
         bufferPercent,
         stateStyle,
+        user,
+        isAuthenticated: Boolean(user),
+        refreshUser,
+        signOut,
       }}
     >
       {children}

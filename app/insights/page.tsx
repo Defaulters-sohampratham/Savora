@@ -6,11 +6,8 @@ import {
   BarChart3,
   CheckCircle2,
   CircleDollarSign,
-  HelpCircle,
   Lightbulb,
   LineChart,
-  ShieldCheck,
-  TrendingDown,
   TrendingUp,
 } from "lucide-react";
 import { formatMonth, useWorker } from "@/lib/context/worker-context";

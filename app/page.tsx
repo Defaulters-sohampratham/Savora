@@ -1,260 +1,755 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
+  AlertTriangle,
   ArrowRight,
-  Banknote,
-  Gauge,
-  LineChart,
-  PiggyBank,
+  Briefcase,
+  Check,
+  CheckCircle2,
+  ChevronRight,
+  Loader2,
+  Lock,
   ShieldCheck,
-  SlidersHorizontal,
-  TrendingUp,
-  User,
-  WalletCards,
+  Smartphone,
+  Sparkles,
+  UserCheck,
+  XCircle,
 } from "lucide-react";
-import { useWorker } from "@/lib/context/worker-context";
-import { formatCurrency } from "@/lib/finance/engine";
+import { stateStyles, useWorker } from "@/lib/context/worker-context";
+import {
+  calculateFinancialResilience,
+  formatCurrency,
+  profileToCalculationInput,
+} from "@/lib/finance/engine";
+import { explainRecommendation, explainScenario } from "@/lib/finance/narrator";
+import { signInAction, signUpAction } from "@/app/auth/actions";
 
-export default function DashboardPage() {
+export default function LandingPage() {
   const {
-    profiles,
-    selectedProfile,
-    selectedProfileId,
-    setSelectedProfileId,
-    result,
-    stateStyle,
-    explanation,
+    demoProfiles,
+    user,
+    isAuthenticated,
+    refreshUser,
+    signOut,
   } = useWorker();
 
+  // Landing page interactive demonstration is pinned to demoProfiles
+  const [selectedDemoId, setSelectedDemoId] = useState(
+    demoProfiles[0]?.id ?? "ramesh-rideshare"
+  );
+  const activeDemoProfile = useMemo(() => {
+    return (
+      demoProfiles.find((p) => p.id === selectedDemoId) ??
+      demoProfiles[0]
+    );
+  }, [demoProfiles, selectedDemoId]);
+
+  const demoResult = useMemo(
+    () => calculateFinancialResilience(profileToCalculationInput(activeDemoProfile)),
+    [activeDemoProfile]
+  );
+  const demoExplanation = useMemo(
+    () => explainRecommendation(demoResult),
+    [demoResult]
+  );
+  const demoScenarioExplanation = useMemo(
+    () => explainScenario(demoResult),
+    [demoResult]
+  );
+  const demoBufferPercent = Math.min(
+    100,
+    Math.round(
+      (activeDemoProfile.currentSavings / demoResult.buffer_target) * 100
+    )
+  );
+  const demoStateStyle = stateStyles[demoResult.state];
+
+  // Auth tab state
+  const [authMode, setAuthMode] = useState<"signup" | "signin">("signup");
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [authSuccess, setAuthSuccess] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    contact: "",
+    category: "Rideshare (Uber, Ola)",
+    pass: "",
+  });
+
+  // Demo simulator state
+  const [simulateDrop, setSimulateDrop] = useState(false);
+
+  const normalizeEmail = (contact: string) => {
+    if (contact.includes("@")) return contact.trim().toLowerCase();
+    const digits = contact.replace(/\D/g, "");
+    return `worker_${digits || "guest"}@savora.local`;
+  };
+
+  const handleAuthSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    setAuthError(null);
+    setAuthSuccess(null);
+
+    const email = normalizeEmail(formData.contact);
+
+    if (formData.pass.length < 6) {
+      setAuthError("Password must be at least 6 characters.");
+      setAuthLoading(false);
+      return;
+    }
+
+    try {
+      if (authMode === "signup") {
+        const res = await signUpAction({
+          email,
+          pass: formData.pass,
+          name: formData.name.trim() || "Worker",
+          category: formData.category,
+        });
+
+        if (res.success) {
+          setAuthSuccess(res.message);
+          await refreshUser();
+        } else {
+          setAuthError(res.message);
+        }
+      } else {
+        const res = await signInAction({
+          email,
+          pass: formData.pass,
+        });
+
+        if (res.success) {
+          setAuthSuccess("Signed in successfully!");
+          await refreshUser();
+        } else {
+          setAuthError(res.message);
+        }
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Authentication error.";
+      setAuthError(msg);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   return (
-    <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
-      {/* Welcome & Worker Persona Selection Strip */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-800">
-              <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-              Active Worker Persona
-            </div>
-            <h1 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-slate-950">
-              {selectedProfile.name}
-            </h1>
-            <p className="mt-1 text-sm font-medium text-teal-800">
-              {selectedProfile.role} · {selectedProfile.city}
-            </p>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-650">
-              {selectedProfile.description}
-            </p>
+    <div className="flex min-h-screen flex-col bg-[#f8faf9] text-slate-950">
+      {/* ========================================================================= */}
+      {/* 1. HERO SECTION: Problem & What We Do in a Brief One-Liner Manner        */}
+      {/* ========================================================================= */}
+      <section className="relative overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-white via-[#f8faf9] to-[#edf4f2] px-4 pt-12 pb-20 sm:px-6 lg:px-8 lg:pt-16 lg:pb-28">
+        {/* Subtle background glow pattern */}
+        <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-teal-100/50 via-emerald-100/40 to-transparent blur-3xl" />
+
+        <div className="mx-auto max-w-5xl text-center">
+          {/* Top Distinct Brand Identifier Badge */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/90 px-3.5 py-1.5 shadow-xs backdrop-blur-sm">
+            <span className="flex h-2 w-2 rounded-full bg-teal-600 animate-pulse" />
+            <span className="text-xs font-bold uppercase tracking-wider text-teal-900">
+              Savora · Adaptive Financial Resilience
+            </span>
           </div>
 
-          {/* Quick profile switch pills */}
-          <div className="flex flex-wrap gap-2 lg:flex-col lg:items-end">
-            <span className="w-full text-xs font-semibold uppercase tracking-wider text-slate-400 lg:text-right">
-              Switch Persona:
+          {/* Main Hook Headline */}
+          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+            A safety net built for income that{" "}
+            <span className="bg-gradient-to-r from-teal-700 via-emerald-600 to-teal-800 bg-clip-text text-transparent">
+              changes every week
             </span>
-            <div className="flex flex-wrap gap-2">
-              {profiles.map((p) => (
+            .
+          </h1>
+
+          {/* Primary Quick Actions */}
+          <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+            <a
+              href="#demo"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-700 px-6 py-3.5 text-base font-bold text-white shadow-md shadow-teal-700/20 transition hover:from-teal-700 hover:to-emerald-800 sm:w-auto"
+            >
+              <span>Try Live 3-Worker Demo</span>
+              <ArrowRight className="h-4 w-4" />
+            </a>
+            <a
+              href="#auth"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-base font-semibold text-slate-800 shadow-xs transition hover:border-slate-400 hover:bg-slate-50 sm:w-auto"
+            >
+              <span>Create Free Profile</span>
+            </a>
+          </div>
+
+          {/* One-Liner Problem vs Solution Visual Pill */}
+          <div id="problem" className="mt-14 grid gap-4 text-left sm:grid-cols-2">
+            {/* The Problem Box */}
+            <div className="rounded-2xl border border-rose-200/90 bg-white/90 p-6 shadow-xs backdrop-blur-xs transition hover:border-rose-300">
+              <div className="flex items-center gap-2.5 text-rose-700">
+                <XCircle className="h-5 w-5 shrink-0 stroke-[2.2]" />
+                <span className="text-xs font-bold uppercase tracking-wider">The Problem</span>
+              </div>
+              <h3 className="mt-2 text-lg font-bold text-slate-900">
+                Rigid Monthly Saving Rules Break
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-650">
+                Traditional banking rules demand fixed monthly deposits. When platform algorithms shift or demand slows, workers get trapped between paying loan EMIs or borrowing high-interest payday cash.
+              </p>
+            </div>
+
+            {/* What Savora Does Box */}
+            <div id="solution" className="rounded-2xl border border-teal-200 bg-white/90 p-6 shadow-xs backdrop-blur-xs transition hover:border-teal-300">
+              <div className="flex items-center gap-2.5 text-teal-700">
+                <CheckCircle2 className="h-5 w-5 shrink-0 stroke-[2.2]" />
+                <span className="text-xs font-bold uppercase tracking-wider">What Savora Does</span>
+              </div>
+              <h3 className="mt-2 text-lg font-bold text-slate-900">
+                Adaptive Volatility-Grounded Buffers
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-650">
+                Savora senses income cycles in real time. We automatically recommend higher savings when earnings surge, and pause savings during lean weeks to safeguard your day-to-day essentials.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 2. AUTH SECTION: Clean Login / Sign Up Matching Site Vibe                 */}
+      {/* ========================================================================= */}
+      <section id="auth" className="border-b border-slate-200 bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-xl">
+            {/* Header copy */}
+            <div className="text-center">
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold text-teal-800">
+                <UserCheck className="h-3.5 w-3.5" />
+                <span>Instant Access · No Credit Card Required</span>
+              </div>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+                Get Your Personalized Resilience Plan
+              </h2>
+              <p className="mt-2 text-sm text-slate-600">
+                Join thousands of rideshare drivers, couriers, and freelance creatives taking the stress out of irregular earnings.
+              </p>
+            </div>
+
+            {/* Auth Card Container */}
+            <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-[#fbfdfc] shadow-md">
+              {/* Tab Switcher */}
+              <div className="grid grid-cols-2 border-b border-slate-200 bg-slate-50 text-center text-sm font-bold">
                 <button
-                  key={p.id}
-                  onClick={() => setSelectedProfileId(p.id)}
                   type="button"
-                  className={`rounded-lg px-3 py-2 text-xs font-semibold transition ${
-                    p.id === selectedProfileId
-                      ? "bg-teal-600 text-white shadow-sm"
-                      : "border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
+                  onClick={() => setAuthMode("signup")}
+                  className={`py-3.5 transition ${
+                    authMode === "signup"
+                      ? "bg-white text-teal-900 shadow-xs border-b-2 border-teal-600"
+                      : "text-slate-500 hover:text-slate-800"
                   }`}
                 >
-                  {p.name.split(" ")[0]} ({p.role.split(" ")[0]})
+                  Create Free Account
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => setAuthMode("signin")}
+                  className={`py-3.5 transition ${
+                    authMode === "signin"
+                      ? "bg-white text-teal-900 shadow-xs border-b-2 border-teal-600"
+                      : "text-slate-500 hover:text-slate-800"
+                  }`}
+                >
+                  Sign In
+                </button>
+              </div>
+
+              {/* Form Body */}
+              <div className="p-6 sm:p-8">
+                {isAuthenticated && user ? (
+                  <div className="rounded-xl border border-teal-200 bg-teal-50/70 p-6 text-center space-y-3">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-teal-600 text-white shadow-xs">
+                      <CheckCircle2 className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-950">You are currently signed in</h3>
+                    <p className="text-sm text-slate-700">
+                      Logged in as <strong>{user.displayName}</strong> ({user.role})
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                      <Link
+                        href="/dashboard"
+                        className="inline-flex items-center gap-2 rounded-xl bg-teal-700 px-5 py-2.5 text-sm font-bold text-white hover:bg-teal-800 transition"
+                      >
+                        <span>Open Your Dashboard</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={signOut}
+                        className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                ) : authSuccess ? (
+                  <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center space-y-3">
+                    <CheckCircle2 className="mx-auto h-10 w-10 text-emerald-600" />
+                    <h3 className="text-lg font-bold text-emerald-950">Success!</h3>
+                    <p className="text-sm text-emerald-800">{authSuccess}</p>
+                    <div className="pt-2">
+                      <Link
+                        href="/dashboard"
+                        className="inline-flex items-center gap-2 rounded-xl bg-teal-700 px-5 py-2.5 text-sm font-bold text-white hover:bg-teal-800 transition"
+                      >
+                        <span>Continue to Full Dashboard</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleAuthSubmit} className="space-y-4">
+                    {authError && (
+                      <div className="rounded-xl border border-rose-200 bg-rose-50 p-3.5 text-xs font-medium text-rose-800">
+                        {authError}
+                      </div>
+                    )}
+
+                    {authMode === "signup" && (
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                          Full Name
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder="e.g. Ramesh Chandra"
+                          className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20"
+                        />
+                      </div>
+                    )}
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                        Phone Number or Work Email
+                      </label>
+                      <div className="relative mt-1.5">
+                        <input
+                          type="text"
+                          required
+                          value={formData.contact}
+                          onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                          placeholder="+91 98765 43210 or email@domain.com"
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20"
+                        />
+                        <Smartphone className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                      </div>
+                    </div>
+
+                    {authMode === "signup" && (
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                          Primary Work / Gig Category
+                        </label>
+                        <div className="relative mt-1.5">
+                          <select
+                            value={formData.category}
+                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                            className="w-full appearance-none rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20"
+                          >
+                            <option value="Rideshare (Uber, Ola)">Rideshare (Uber, Ola, Rapido)</option>
+                            <option value="Delivery (Zomato, Swiggy, Zepto)">Delivery (Zomato, Swiggy, Zepto)</option>
+                            <option value="Freelancer / Creative">Freelancer / Creative / Tech</option>
+                            <option value="Home Services (Urban Company)">Home Services (Urban Company)</option>
+                            <option value="Artisan / Contractor">Independent Contractor / Artisan</option>
+                          </select>
+                          <Briefcase className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                        </div>
+                      </div>
+                    )}
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                        {authMode === "signup" ? "Set Password (min 6 characters)" : "Password"}
+                      </label>
+                      <div className="relative mt-1.5">
+                        <input
+                          type="password"
+                          required
+                          minLength={6}
+                          value={formData.pass}
+                          onChange={(e) => setFormData({ ...formData, pass: e.target.value })}
+                          placeholder="••••••••"
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20"
+                        />
+                        <Lock className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={authLoading}
+                      className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-700 py-3 text-sm font-bold text-white shadow-sm shadow-teal-700/20 transition hover:from-teal-700 hover:to-emerald-800 disabled:opacity-60 active:scale-98"
+                    >
+                      {authLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                      <span>
+                        {authLoading
+                          ? "Connecting to database..."
+                          : authMode === "signup"
+                            ? "Create Free Resilience Account"
+                            : "Sign In to Savora"}
+                      </span>
+                    </button>
+
+                    <div className="flex items-center justify-center gap-2 pt-2 text-center text-xs text-slate-500">
+                      <span>Or prefer to test without signing up?</span>
+                      <a href="#demo" className="font-bold text-teal-700 hover:underline">
+                        Jump directly to Demo ↓
+                      </a>
+                    </div>
+                  </form>
+                )}
+              </div>
+
+              {/* Trust Badge Footer */}
+              <div className="border-t border-slate-200 bg-slate-50/70 px-6 py-3.5 text-xs text-slate-600">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="flex items-center gap-1.5">
+                    <ShieldCheck className="h-4 w-4 text-teal-700" />
+                    <span>Bank-grade local privacy</span>
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-teal-700" />
+                    <span>No bank login required</span>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Primary Financial Health & Resilience Status */}
-      <section className={`rounded-2xl border bg-white p-6 shadow-sm ${stateStyle.border}`}>
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-          <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-widest text-slate-500">
-              Current Financial Health State
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <span
-                className={`inline-flex items-center rounded-full px-3.5 py-1 text-sm font-bold ring-1 ${stateStyle.badge}`}
-              >
-                {stateStyle.label}
-              </span>
-              <span className="text-xs font-semibold text-slate-500">
-                Confidence: <strong className="text-slate-800">{result.confidence}</strong>
-              </span>
+      {/* ========================================================================= */}
+      {/* 3. DEMO SECTION: 3 Real Worker Personas with Live Calculations            */}
+      {/* ========================================================================= */}
+      <section id="demo" className="py-16 sm:py-24 bg-[#f8faf9]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1 text-xs font-bold text-teal-800 shadow-2xs">
+              <Sparkles className="h-3.5 w-3.5 text-teal-700" />
+              <span>Interactive Platform Demonstration</span>
             </div>
-            <p className="max-w-3xl text-base leading-relaxed text-slate-800">
-              {result.state_reason}
-            </p>
-          </div>
-          <div className="flex shrink-0 items-center justify-center rounded-2xl bg-teal-50 p-4 text-teal-700">
-            <Gauge className="h-12 w-12" aria-hidden="true" />
-          </div>
-        </div>
-      </section>
-
-      {/* Snapshot KPI Grid */}
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-semibold uppercase tracking-wider">Latest Income</span>
-            <Banknote className="h-5 w-5 text-teal-700" />
-          </div>
-          <p className="mt-3 text-2xl font-bold text-slate-950">
-            {formatCurrency(result.latest_income)}
-          </p>
-          <p className="mt-1 text-xs text-slate-500">
-            Avg: {formatCurrency(result.average_income)}/mo
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-semibold uppercase tracking-wider">Monthly Outflow</span>
-            <WalletCards className="h-5 w-5 text-teal-700" />
-          </div>
-          <p className="mt-3 text-2xl font-bold text-slate-950">
-            {formatCurrency(result.essential_total)}
-          </p>
-          <p className="mt-1 text-xs text-slate-500">
-            Essentials + {formatCurrency(selectedProfile.monthlyEmi)} EMI
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-semibold uppercase tracking-wider">Current Savings</span>
-            <PiggyBank className="h-5 w-5 text-violet-700" />
-          </div>
-          <p className="mt-3 text-2xl font-bold text-slate-950">
-            {formatCurrency(selectedProfile.currentSavings)}
-          </p>
-          <p className="mt-1 text-xs text-slate-500">
-            Target: {formatCurrency(result.buffer_target)}
-          </p>
-        </div>
-
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-semibold uppercase tracking-wider">Runway Months</span>
-            <TrendingUp className="h-5 w-5 text-emerald-700" />
-          </div>
-          <p className="mt-3 text-2xl font-bold text-slate-950">
-            {result.runway_months} mo
-          </p>
-          <p className="mt-1 text-xs text-slate-500">
-            At current essential spend rate
-          </p>
-        </div>
-      </section>
-
-      {/* Cycle Action Callout Banner */}
-      <section className="rounded-2xl border border-teal-200 bg-gradient-to-br from-teal-50/60 to-emerald-50/40 p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-1">
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-900">
-              Recommended Action For This Cycle
-            </span>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-950">
-              {result.recommended_saving > 0
-                ? `Set aside ${formatCurrency(result.recommended_saving)} into emergency buffer`
-                : result.state === "Buffer Complete"
-                  ? "Emergency buffer complete — preserve cash or tackle long-term goals"
-                  : "Preserve all cashflow — zero savings recommended this cycle"}
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+              See How Savora Adapts to Real Workers
             </h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-slate-700">
-              {explanation}
+            <p className="mt-2 text-base text-slate-650">
+              Select one of the three gig worker profiles below to see how our engine balances volatile income, fixed essential costs, and vehicle or micro-loans.
             </p>
           </div>
 
-          <Link
-            href="/outputs"
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-teal-700 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-teal-800"
-          >
-            <span>View Outputs & Simulator</span>
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          {/* Three Demo Profile Cards */}
+          <div className="grid gap-5 md:grid-cols-3">
+            {demoProfiles.map((profile) => {
+              const isSelected = profile.id === selectedDemoId;
+              const totalOutflow = profile.essentialExpenses + profile.monthlyEmi;
+
+              return (
+                <button
+                  key={profile.id}
+                  type="button"
+                  onClick={() => setSelectedDemoId(profile.id)}
+                  className={`group relative rounded-2xl border p-6 text-left transition-all duration-200 hover:-translate-y-1 hover:shadow-md ${
+                    isSelected
+                      ? "border-teal-600 bg-white ring-2 ring-teal-500/20 shadow-sm"
+                      : "border-slate-200 bg-white/80 hover:border-slate-300"
+                  }`}
+                >
+                  {/* Selection Indicator */}
+                  {isSelected && (
+                    <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-teal-600 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                      Active Demo
+                    </span>
+                  )}
+
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-950 group-hover:text-teal-700 transition">
+                        {profile.name}
+                      </h3>
+                      <p className="text-xs font-semibold text-teal-800 mt-0.5">
+                        {profile.role} · {profile.city}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="mt-3 text-xs leading-relaxed text-slate-650 line-clamp-3">
+                    {profile.description}
+                  </p>
+
+                  <div className="mt-5 space-y-2 border-t border-slate-100 pt-4 text-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500">Essential Outflow:</span>
+                      <span className="font-bold text-slate-900">
+                        {formatCurrency(totalOutflow)}/mo
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500">Current Buffer:</span>
+                      <span className="font-semibold text-teal-700">
+                        {formatCurrency(profile.currentSavings)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex items-center justify-between font-bold text-xs text-teal-700 group-hover:underline">
+                    <span>{isSelected ? "Currently Viewing" : "Load Worker Persona"}</span>
+                    <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Interactive Live Calculation Console for Active Persona */}
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            {/* Console Banner */}
+            <div className="border-b border-slate-100 bg-gradient-to-r from-slate-50 to-teal-50/30 px-6 py-4 sm:px-8">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-teal-900">
+                    Live Resilience Engine Output
+                  </span>
+                  <h3 className="text-xl font-bold text-slate-950">
+                    Real-Time Recommendation for {activeDemoProfile.name}
+                  </h3>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`inline-flex items-center rounded-full px-3.5 py-1 text-xs font-bold ring-1 ${demoStateStyle.badge}`}
+                  >
+                    {demoStateStyle.label}
+                  </span>
+                  <span className="text-xs font-medium text-slate-500">
+                    Confidence: <strong className="text-slate-800">{demoResult.confidence}</strong>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Key Recommendation Strip */}
+            <div className="p-6 sm:p-8 space-y-6">
+              <div className="grid gap-6 lg:grid-cols-2 lg:items-center">
+                {/* Savings Callout */}
+                <div className="space-y-3">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Recommended Saving This Cycle
+                  </span>
+                  <p className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-950">
+                    {simulateDrop && demoResult.scenario
+                      ? formatCurrency(demoResult.scenario.recommended_saving)
+                      : formatCurrency(demoResult.recommended_saving)}
+                  </p>
+                  <p className="text-sm leading-relaxed text-slate-700">
+                    {simulateDrop && demoResult.scenario ? demoScenarioExplanation : demoExplanation}
+                  </p>
+                </div>
+
+                {/* Emergency Buffer Target & Progress Bar */}
+                <div className="rounded-xl border border-slate-100 bg-slate-50 p-5 space-y-3">
+                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-600">
+                    <span>Emergency Runway Buffer</span>
+                    <span className="text-violet-700 font-extrabold">{demoBufferPercent}% Target</span>
+                  </div>
+                  <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200">
+                    <div
+                      className="h-full rounded-full bg-violet-600 transition-all duration-500"
+                      style={{ width: `${demoBufferPercent}%` }}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-slate-600">
+                    <span>Saved: {formatCurrency(activeDemoProfile.currentSavings)}</span>
+                    <span>3-Mo Target: {formatCurrency(demoResult.buffer_target)}</span>
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    Provides <strong className="text-slate-800">{demoResult.runway_months} months</strong> of runway under zero earnings.
+                  </p>
+                </div>
+              </div>
+
+              {/* Stress Simulation Interactive Switch */}
+              <div className="rounded-xl border border-teal-200 bg-teal-50/50 p-5">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-teal-900">
+                      <AlertTriangle className="h-4 w-4 text-amber-600" />
+                      <span>Interactive Stress Test Simulator</span>
+                    </div>
+                    <p className="text-sm font-semibold text-slate-900">
+                      What happens if {activeDemoProfile.name.split(" ")[0]}&apos;s platform income suddenly drops by 20%?
+                    </p>
+                  </div>
+
+                  <label className="inline-flex cursor-pointer items-center gap-3 rounded-xl border border-teal-300 bg-white px-4 py-2.5 text-xs font-bold text-slate-800 shadow-xs transition hover:bg-teal-50">
+                    <input
+                      type="checkbox"
+                      checked={simulateDrop}
+                      onChange={(e) => setSimulateDrop(e.target.checked)}
+                      className="h-4 w-4 accent-teal-700"
+                    />
+                    <span>{simulateDrop ? "Simulated Drop Active (-20%)" : "Enable 20% Income Drop"}</span>
+                  </label>
+                </div>
+
+                {simulateDrop && demoResult.scenario && (
+                  <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50/80 p-3.5 text-xs leading-relaxed text-amber-950">
+                    <strong>Engine Reaction:</strong> Income decreases from {formatCurrency(demoResult.latest_income)} to {formatCurrency(demoResult.scenario.latest_income)}. Notice how the savings recommendation automatically throttles down from {formatCurrency(demoResult.recommended_saving)} to {formatCurrency(demoResult.scenario.recommended_saving)} to keep essentials covered!
+                  </div>
+                )}
+              </div>
+
+              {/* Deep Dive Action */}
+              <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-100 pt-6 sm:flex-row">
+                <p className="text-xs text-slate-500">
+                  Ready to inspect full historical cashflow tables, forecasting charts, and budget breakdowns?
+                </p>
+                <div className="flex flex-wrap gap-2.5">
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center gap-2 rounded-xl bg-teal-700 px-5 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-teal-800 transition"
+                  >
+                    <span>Open Full Worker Dashboard</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                  <Link
+                    href="/outputs"
+                    className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition"
+                  >
+                    <span>What-If Simulator</span>
+                  </Link>
+                  <Link
+                    href="/insights"
+                    className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-800 hover:bg-slate-50 transition"
+                  >
+                    <span>Volatility Trends</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Deep-Dive Navigation Cards */}
-      <section className="space-y-4">
-        <div>
-          <h2 className="text-lg font-bold text-slate-950">Explore Savora Modules</h2>
-          <p className="text-sm text-slate-550">
-            Select a dedicated section below to review granular data, test scenarios, or inspect trends.
-          </p>
+      {/* ========================================================================= */}
+      {/* 4. FOOTER: Polished, High-Trust, Clean Closing                            */}
+      {/* ========================================================================= */}
+      <footer className="mt-auto border-t border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {/* Column 1: Brand & Mission */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-600 text-white shadow-xs">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <span className="text-xl font-extrabold tracking-tight text-slate-950">
+                  Savora<span className="text-teal-600">.</span>
+                </span>
+              </div>
+              <p className="text-xs leading-relaxed text-slate-500">
+                Building financial safety and adaptive buffer engines for the millions of hardworking gig, platform, and freelance professionals.
+              </p>
+              <div className="flex items-center gap-2 text-xs font-semibold text-teal-800">
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                <span>Deterministic Resilience Engine v1.0</span>
+              </div>
+            </div>
+
+            {/* Column 2: Platform Links */}
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                Platform Modules
+              </p>
+              <ul className="mt-3 space-y-2 text-xs text-slate-650">
+                <li>
+                  <Link href="/dashboard" className="hover:text-teal-700 transition">
+                    Worker Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/outputs" className="hover:text-teal-700 transition">
+                    Stress & Drop Simulator
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/insights" className="hover:text-teal-700 transition">
+                    Volatility & Forecasting
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/profile" className="hover:text-teal-700 transition">
+                    Profile & Outflow Details
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3: Personas */}
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                Target Personas
+              </p>
+              <ul className="mt-3 space-y-2 text-xs text-slate-650">
+                <li>
+                  <span className="text-slate-800 font-medium">Ravi Kumar:</span> Rideshare Driver
+                </li>
+                <li>
+                  <span className="text-slate-800 font-medium">Priya Sharma:</span> Freelance Designer
+                </li>
+                <li>
+                  <span className="text-slate-800 font-medium">Amit Patel:</span> Quick Commerce Courier
+                </li>
+                <li>
+                  <span className="text-slate-800 font-medium">Daily Wage & Artisans:</span> Micro-budgeting
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 4: Architecture & Trust */}
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                Architecture & Privacy
+              </p>
+              <ul className="mt-3 space-y-2 text-xs text-slate-650">
+                <li>Zero bank credential harvesting</li>
+                <li>Supabase-ready relational schema</li>
+                <li>Turbopack & Next.js 16 build</li>
+                <li>Deterministic calculations with confidence</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom copyright line */}
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-100 pt-8 sm:flex-row text-xs text-slate-500">
+            <p>© {new Date().getFullYear()} Savora Technologies. All rights reserved.</p>
+            <div className="flex items-center gap-4">
+              <a href="#problem" className="hover:text-slate-800">
+                Problem Statement
+              </a>
+              <a href="#solution" className="hover:text-slate-800">
+                Adaptive Solution
+              </a>
+              <a href="#demo" className="hover:text-slate-800">
+                Live Demo
+              </a>
+              <a href="#auth" className="hover:text-slate-800">
+                Sign In
+              </a>
+            </div>
+          </div>
         </div>
-
-        <div className="grid gap-5 md:grid-cols-3">
-          {/* Card 1: User Details */}
-          <Link
-            href="/profile"
-            className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-teal-300 hover:shadow-md"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-sky-700 transition group-hover:bg-sky-600 group-hover:text-white">
-              <User className="h-6 w-6" />
-            </div>
-            <h3 className="mt-4 text-lg font-bold text-slate-950 group-hover:text-teal-700">
-              User Details & Budget
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">
-              Inspect {selectedProfile.name}&apos;s profile metadata, fixed living expenses, EMI commitments, and 6-month earnings log.
-            </p>
-            <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-teal-700">
-              <span>Review Profile</span>
-              <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
-            </div>
-          </Link>
-
-          {/* Card 2: Outputs & Stress Simulator */}
-          <Link
-            href="/outputs"
-            className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-teal-300 hover:shadow-md"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-700 transition group-hover:bg-violet-600 group-hover:text-white">
-              <SlidersHorizontal className="h-6 w-6" />
-            </div>
-            <h3 className="mt-4 text-lg font-bold text-slate-950 group-hover:text-teal-700">
-              Outputs & What-If Simulator
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">
-              Full breakdown of saving factors, buffer completion targets, and live 20% income-drop stress simulation.
-            </p>
-            <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-teal-700">
-              <span>Run Calculations</span>
-              <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
-            </div>
-          </Link>
-
-          {/* Card 3: Insights & Trends */}
-          <Link
-            href="/insights"
-            className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-teal-300 hover:shadow-md"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 transition group-hover:bg-emerald-600 group-hover:text-white">
-              <LineChart className="h-6 w-6" />
-            </div>
-            <h3 className="mt-4 text-lg font-bold text-slate-950 group-hover:text-teal-700">
-              Insights & Forecasting
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">
-              Explore month-over-month earnings volatility, spread between peak and low cycles, and 3-tier future forecasts.
-            </p>
-            <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-teal-700">
-              <span>View Insights</span>
-              <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" />
-            </div>
-          </Link>
-        </div>
-      </section>
-    </main>
+      </footer>
+    </div>
   );
 }

@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { WorkerProvider } from "@/lib/context/worker-context";
 import { Navbar } from "./_components/navbar";
 
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta-sans",
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Savora | Financial Resilience for Gig Workers",
+  title: "Savora | Adaptive Financial Resilience for Gig Workers",
   description:
-    "Adaptive saving recommendations and income-risk insights for gig and informal workers.",
+    "An adaptive financial resilience engine that dynamically recalculates safe saving targets and safeguards essential cashflow for informal and gig workers.",
 };
 
 export default function RootLayout({
@@ -15,8 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning className="min-h-screen bg-[#f7f9f8] text-slate-950 antialiased">
+    <html lang="en" className={`${plusJakartaSans.variable} scroll-smooth`} suppressHydrationWarning>
+      <body
+        suppressHydrationWarning
+        className="min-h-screen bg-[#f8faf9] text-slate-950 font-sans antialiased selection:bg-teal-100 selection:text-teal-900"
+      >
         <WorkerProvider>
           <Navbar />
           {children}

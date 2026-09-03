@@ -6,12 +6,9 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronUp,
-  Gauge,
   PiggyBank,
-  ShieldAlert,
   ShieldCheck,
   SlidersHorizontal,
-  WalletCards,
 } from "lucide-react";
 import { useWorker } from "@/lib/context/worker-context";
 import { formatCurrency } from "@/lib/finance/engine";
