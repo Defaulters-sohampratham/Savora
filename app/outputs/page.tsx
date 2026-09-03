@@ -342,33 +342,33 @@ function GoalProgress({
 
   if (!goal.exists || isEditing) {
     return (
-      <section className="rounded-2xl border border-violet-200 bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border border-violet-200 bg-white p-6 shadow-sm dark:border-violet-500/30 dark:bg-slate-950/80 dark:shadow-violet-950/20">
         <div className="flex items-start gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-700">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300">
             <Target className="h-6 w-6" />
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-violet-700">Future goal</p>
-            <h2 className="mt-1 text-xl font-bold text-slate-950">Give your flexible cash a destination</h2>
-            <p className="mt-1 text-sm text-slate-600">Half of each Buffer Complete cycle&apos;s flexible cash will go toward this goal; emergency savings stay untouched.</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-violet-700 dark:text-violet-300">Future goal</p>
+            <h2 className="mt-1 text-xl font-bold text-slate-950 dark:text-white">Give your flexible cash a destination</h2>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Half of each Buffer Complete cycle&apos;s flexible cash will go toward this goal; emergency savings stay untouched.</p>
           </div>
         </div>
         <form className="mt-5 grid gap-4 sm:grid-cols-3 sm:items-end" onSubmit={save}>
-          <label className="grid gap-1.5 text-sm font-semibold text-slate-700">
+          <label className="grid gap-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200">
             Goal name
-            <input className="rounded-lg border border-slate-300 px-3 py-2 font-normal" onChange={(event) => setName(event.target.value)} placeholder="New delivery bike" required value={name} />
+            <input className="rounded-lg border border-slate-300 bg-white px-3 py-2 font-normal text-slate-950 placeholder:text-slate-400 dark:border-white/15 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500" onChange={(event) => setName(event.target.value)} placeholder="New delivery bike" required value={name} />
           </label>
-          <label className="grid gap-1.5 text-sm font-semibold text-slate-700">
+          <label className="grid gap-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200">
             Target amount
-            <input className="rounded-lg border border-slate-300 px-3 py-2 font-normal" min="1" onChange={(event) => setTargetAmount(event.target.value)} required type="number" value={targetAmount} />
+            <input className="rounded-lg border border-slate-300 bg-white px-3 py-2 font-normal text-slate-950 dark:border-white/15 dark:bg-slate-900 dark:text-white" min="1" onChange={(event) => setTargetAmount(event.target.value)} required type="number" value={targetAmount} />
           </label>
-          <label className="grid gap-1.5 text-sm font-semibold text-slate-700">
+          <label className="grid gap-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200">
             Already saved
-            <input className="rounded-lg border border-slate-300 px-3 py-2 font-normal" min="0" onChange={(event) => setSavedSoFar(event.target.value)} required type="number" value={savedSoFar} />
+            <input className="rounded-lg border border-slate-300 bg-white px-3 py-2 font-normal text-slate-950 dark:border-white/15 dark:bg-slate-900 dark:text-white" min="0" onChange={(event) => setSavedSoFar(event.target.value)} required type="number" value={savedSoFar} />
           </label>
           <div className="sm:col-span-3 flex flex-wrap gap-3">
             <button className="rounded-lg bg-violet-700 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-violet-800" type="submit">Save goal</button>
-            {goal.exists && <button className="rounded-lg px-4 py-2.5 text-sm font-semibold text-slate-600" onClick={() => setIsEditing(false)} type="button">Cancel</button>}
+            {goal.exists && <button className="rounded-lg px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white" onClick={() => setIsEditing(false)} type="button">Cancel</button>}
           </div>
         </form>
       </section>
@@ -377,24 +377,24 @@ function GoalProgress({
 
   const totalSavedAfterContribution = goal.target_amount - goal.remaining_amount;
   return (
-    <section className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white p-6 shadow-sm dark:border-violet-500/30 dark:from-violet-950/30 dark:to-slate-950/90 dark:shadow-violet-950/20">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-violet-700"><Target className="h-4 w-4" /> Goal progress</div>
-          <h2 className="mt-2 text-2xl font-bold text-slate-950">{goal.name}</h2>
+          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-violet-700 dark:text-violet-300"><Target className="h-4 w-4" /> Goal progress</div>
+          <h2 className="mt-2 text-2xl font-bold text-slate-950 dark:text-white">{goal.name}</h2>
         </div>
-        {goal.status === "Complete" ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-800">✓ Complete</span> : <button className="text-sm font-bold text-violet-700 hover:text-violet-900" onClick={() => setIsEditing(true)} type="button">Edit goal</button>}
+        {goal.status === "Complete" ? <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300">✓ Complete</span> : <button className="text-sm font-bold text-violet-700 transition hover:text-violet-900 dark:text-violet-300 dark:hover:text-violet-200" onClick={() => setIsEditing(true)} type="button">Edit goal</button>}
       </div>
       {goal.status === "Complete" ? (
-        <p className="mt-5 rounded-xl bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">You&apos;ve fully funded {goal.name}. That&apos;s a real win.</p>
+        <p className="mt-5 rounded-xl bg-emerald-50 p-4 text-sm font-semibold text-emerald-900 dark:bg-emerald-500/10 dark:text-emerald-200">You&apos;ve fully funded {goal.name}. That&apos;s a real win.</p>
       ) : (
         <>
-          <div className="mt-5 h-4 overflow-hidden rounded-full bg-violet-100">
+          <div className="mt-5 h-4 overflow-hidden rounded-full bg-violet-100 dark:bg-slate-800">
             <div className="h-full rounded-full bg-gradient-to-r from-violet-500 to-violet-700 transition-all duration-500" style={{ width: `${goal.progress_pct}%` }} />
           </div>
-          <div className="mt-2 flex justify-between text-sm font-semibold text-slate-700"><span>{formatCurrency(totalSavedAfterContribution)} of {formatCurrency(goal.target_amount)}</span><span>{goal.progress_pct}%</span></div>
-          <div className="mt-5 flex flex-col gap-3 rounded-xl border border-violet-200 bg-white/80 p-4 sm:flex-row sm:items-center sm:justify-between">
-            <div><p className="text-xl font-extrabold text-violet-800">{formatCurrency(goal.contribution_this_cycle)} this cycle</p><p className="mt-1 text-sm text-slate-600">{goal.eta_cycles ? `About ${goal.eta_cycles} cycle${goal.eta_cycles === 1 ? "" : "s"} to go` : "Contribution will resume when flexible cash is available."}</p></div>
+          <div className="mt-2 flex justify-between text-sm font-semibold text-slate-700 dark:text-slate-300"><span>{formatCurrency(totalSavedAfterContribution)} of {formatCurrency(goal.target_amount)}</span><span>{goal.progress_pct}%</span></div>
+          <div className="mt-5 flex flex-col gap-3 rounded-xl border border-violet-200 bg-white/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-violet-500/25 dark:bg-slate-900/80">
+            <div><p className="text-xl font-extrabold text-violet-800 dark:text-violet-300">{formatCurrency(goal.contribution_this_cycle)} this cycle</p><p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{goal.eta_cycles ? `About ${goal.eta_cycles} cycle${goal.eta_cycles === 1 ? "" : "s"} to go` : "Contribution will resume when flexible cash is available."}</p></div>
             <button className="rounded-lg bg-violet-700 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-violet-800" onClick={onApplyContribution} type="button">Mark contribution saved</button>
           </div>
         </>
