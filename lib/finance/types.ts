@@ -61,3 +61,10 @@ export type CalculationResult = {
   state_reason: string;
   scenario: ScenarioResult | null;
 };
+
+export type AuthUser = {
+  id: string;
+  email?: string;
+  displayName?: string;
+  role?: string;
+};

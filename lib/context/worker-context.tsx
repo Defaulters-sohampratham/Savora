@@ -1,6 +1,6 @@
 "use client";
 
-import React, {
+import {
   createContext,
   useCallback,
   useContext,
@@ -15,6 +15,7 @@ import {
 } from "@/lib/finance/engine";
 import { explainRecommendation, explainScenario } from "@/lib/finance/narrator";
 import type {
+  AuthUser,
   CalculationResult,
   FinancialState,
   WorkerProfile,
@@ -31,51 +32,44 @@ export const stateStyles: Record<
   }
 > = {
   Critical: {
-    badge: "bg-rose-100 text-rose-800 ring-rose-200",
-    border: "border-rose-300",
+    badge: "bg-rose-100 text-rose-800 ring-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:ring-rose-800",
+    border: "border-rose-300 dark:border-rose-800",
     label: "Critical",
-    soft: "bg-rose-50 text-rose-900",
+    soft: "bg-rose-50 text-rose-900 dark:bg-rose-950/40 dark:text-rose-200",
   },
   Low: {
-    badge: "bg-amber-100 text-amber-800 ring-amber-200",
-    border: "border-amber-300",
+    badge: "bg-amber-100 text-amber-800 ring-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:ring-amber-800",
+    border: "border-amber-300 dark:border-amber-800",
     label: "Low-income period",
-    soft: "bg-amber-50 text-amber-900",
+    soft: "bg-amber-50 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200",
   },
   Normal: {
-    badge: "bg-sky-100 text-sky-800 ring-sky-200",
-    border: "border-sky-300",
+    badge: "bg-sky-100 text-sky-800 ring-sky-200 dark:bg-sky-950/60 dark:text-sky-300 dark:ring-sky-800",
+    border: "border-sky-300 dark:border-sky-800",
     label: "Normal period",
-    soft: "bg-sky-50 text-sky-900",
+    soft: "bg-sky-50 text-sky-900 dark:bg-sky-950/40 dark:text-sky-200",
   },
   High: {
-    badge: "bg-emerald-100 text-emerald-800 ring-emerald-200",
-    border: "border-emerald-300",
+    badge: "bg-emerald-100 text-emerald-800 ring-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:ring-emerald-800",
+    border: "border-emerald-300 dark:border-emerald-800",
     label: "High-income period",
-    soft: "bg-emerald-50 text-emerald-900",
+    soft: "bg-emerald-50 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200",
   },
   "Buffer Complete": {
-    badge: "bg-violet-100 text-violet-800 ring-violet-200",
-    border: "border-violet-300",
+    badge: "bg-violet-100 text-violet-800 ring-violet-200 dark:bg-violet-950/60 dark:text-violet-300 dark:ring-violet-800",
+    border: "border-violet-300 dark:border-violet-800",
     label: "Buffer complete",
-    soft: "bg-violet-50 text-violet-900",
+    soft: "bg-violet-50 text-violet-900 dark:bg-violet-950/40 dark:text-violet-200",
   },
 };
 
-const monthFormatter = new Intl.DateTimeFormat("en-IN", {
-  month: "short",
-  year: "numeric",
-});
-
-export function formatMonth(date: string) {
-  return monthFormatter.format(new Date(date));
-}
-
-export interface AuthUser {
-  id: string;
-  email?: string;
-  displayName: string;
-  role: string;
+export function formatMonth(dateStr: string) {
+  const [year, month] = dateStr.split("-");
+  const monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
+  return `${monthNames[Number(month) - 1]} ${year}`;
 }
 
 interface WorkerContextValue {
@@ -91,6 +85,8 @@ interface WorkerContextValue {
   stateStyle: (typeof stateStyles)[FinancialState];
   user: AuthUser | null;
   isAuthenticated: boolean;
+  hasCompletedOnboarding: boolean;
+  updateUserProfile: (data: Partial<WorkerProfile>) => void;
   refreshUser: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -102,6 +98,26 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
   const [selectedProfileId, setSelectedProfileId] = useState<string>(
     demoProfiles[0]?.id ?? ""
   );
+  const [customUserProfile, setCustomUserProfile] = useState<Partial<WorkerProfile> | null>(null);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+
+  // Load custom user profile from localStorage whenever user changes
+  useEffect(() => {
+    if (!user) {
+      setCustomUserProfile(null);
+      setHasCompletedOnboarding(false);
+      return;
+    }
+
+    try {
+      const savedData = localStorage.getItem(`savora_user_profile_${user.id}`);
+      const onboarded = localStorage.getItem(`savora_onboarded_${user.id}`) === "true";
+      if (savedData) {
+        setCustomUserProfile(JSON.parse(savedData));
+      }
+      setHasCompletedOnboarding(onboarded);
+    } catch (_) {}
+  }, [user]);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -141,8 +157,27 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
   const signOut = useCallback(async () => {
     await signOutAction();
     setUser(null);
+    setCustomUserProfile(null);
+    setHasCompletedOnboarding(false);
     setSelectedProfileId(demoProfiles[0]?.id ?? "");
   }, []);
+
+  const updateUserProfile = useCallback(
+    (data: Partial<WorkerProfile>) => {
+      setCustomUserProfile((prev) => {
+        const updated = { ...(prev || {}), ...data };
+        if (user) {
+          try {
+            localStorage.setItem(`savora_user_profile_${user.id}`, JSON.stringify(updated));
+            localStorage.setItem(`savora_onboarded_${user.id}`, "true");
+          } catch (_) {}
+        }
+        return updated;
+      });
+      setHasCompletedOnboarding(true);
+    },
+    [user]
+  );
 
   // When authenticated, only the logged-in user's profile exists in the app.
   // When logged out, demoProfiles are provided.
@@ -151,9 +186,9 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
       return demoProfiles;
     }
 
-    const userProfile: WorkerProfile = {
+    const defaultProfile: WorkerProfile = {
       id: `user-${user.id}`,
-      name: user.displayName,
+      name: user.displayName || "Worker",
       role: user.role || "Gig Partner",
       city: "Bengaluru",
       essentialExpenses: 18000,
@@ -167,11 +202,27 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
         { date: "2026-07-31", amount: 29000 },
         { date: "2026-08-31", amount: 32500 },
       ],
-      description: `Active personal profile for ${user.displayName}. Live calculated resilience based on recent earnings.`,
+      description: `Active personal profile for ${user.displayName || "Worker"}. Live calculated resilience based on recent earnings.`,
     };
 
-    return [userProfile];
-  }, [user]);
+    const merged: WorkerProfile = {
+      ...defaultProfile,
+      ...(customUserProfile || {}),
+      id: `user-${user.id}`,
+      name: customUserProfile?.name || user.displayName || defaultProfile.name,
+      role: customUserProfile?.role || user.role || defaultProfile.role,
+      city: customUserProfile?.city || defaultProfile.city,
+      essentialExpenses: customUserProfile?.essentialExpenses ?? defaultProfile.essentialExpenses,
+      monthlyEmi: customUserProfile?.monthlyEmi ?? defaultProfile.monthlyEmi,
+      currentSavings: customUserProfile?.currentSavings ?? defaultProfile.currentSavings,
+      monthlyIncome: customUserProfile?.monthlyIncome ?? defaultProfile.monthlyIncome,
+      description:
+        customUserProfile?.description ||
+        `Verified worker profile for ${user.displayName || "Worker"}. Tailored cashflow and resilience calculations.`,
+    };
+
+    return [merged];
+  }, [user, customUserProfile]);
 
   const selectedProfile = useMemo(() => {
     if (user && profiles.length > 0) {
@@ -199,27 +250,44 @@ export function WorkerProvider({ children }: { children: React.ReactNode }) {
 
   const stateStyle = stateStyles[result.state];
 
+  const value = useMemo(
+    () => ({
+      profiles,
+      demoProfiles,
+      selectedProfile,
+      selectedProfileId,
+      setSelectedProfileId,
+      result,
+      explanation,
+      scenarioExplanation,
+      bufferPercent,
+      stateStyle,
+      user,
+      isAuthenticated: Boolean(user),
+      hasCompletedOnboarding,
+      updateUserProfile,
+      refreshUser,
+      signOut,
+    }),
+    [
+      profiles,
+      selectedProfile,
+      selectedProfileId,
+      result,
+      explanation,
+      scenarioExplanation,
+      bufferPercent,
+      stateStyle,
+      user,
+      hasCompletedOnboarding,
+      updateUserProfile,
+      refreshUser,
+      signOut,
+    ]
+  );
+
   return (
-    <WorkerContext.Provider
-      value={{
-        profiles,
-        demoProfiles,
-        selectedProfile,
-        selectedProfileId,
-        setSelectedProfileId,
-        result,
-        explanation,
-        scenarioExplanation,
-        bufferPercent,
-        stateStyle,
-        user,
-        isAuthenticated: Boolean(user),
-        refreshUser,
-        signOut,
-      }}
-    >
-      {children}
-    </WorkerContext.Provider>
+    <WorkerContext.Provider value={value}>{children}</WorkerContext.Provider>
   );
 }
 
