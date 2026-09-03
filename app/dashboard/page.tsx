@@ -25,15 +25,21 @@ export default function DashboardPage() {
     setSelectedProfileId,
     result,
     stateStyle,
-    explanation,
     isAuthenticated,
     user,
   } = useWorker();
+  const confidencePercent =
+    result.confidence === "High" ? 100 : result.confidence === "Medium" ? 66 : 33;
+  const compactActionSummary = result.shortfall.exists
+    ? `Cover the ${formatCurrency(result.shortfall.amount)} shortfall before saving this cycle.`
+    : result.state === "Buffer Complete"
+      ? "Your buffer is complete—direct this cycle's surplus toward debt or goals."
+      : `Save ${formatCurrency(result.recommended_saving)} from your ${formatCurrency(result.surplus)} surplus; keep ${formatCurrency(result.remaining_cash)} flexible.`;
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
       {/* Welcome & Worker Persona Selection Strip */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="rounded-2xl bg-white/70 p-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-800">
@@ -99,8 +105,16 @@ export default function DashboardPage() {
               {result.state_reason}
             </p>
           </div>
-          <div className="flex shrink-0 items-center justify-center rounded-2xl bg-teal-50 p-4 text-teal-700">
-            <Gauge className="h-12 w-12" aria-hidden="true" />
+          <div
+            className="grid h-20 w-20 shrink-0 place-items-center rounded-full p-1"
+            role="img"
+            aria-label={`${result.confidence} confidence based on available income history`}
+            style={{ background: `conic-gradient(#0f766e ${confidencePercent}%, #ccfbf1 0)` }}
+          >
+            <div className="grid h-full w-full place-items-center rounded-full bg-white text-center">
+              <Gauge className="h-5 w-5 text-teal-700" aria-hidden="true" />
+              <span className="-mt-2 text-[11px] font-bold text-teal-800">{confidencePercent}%</span>
+            </div>
           </div>
         </div>
       </section>
@@ -163,19 +177,19 @@ export default function DashboardPage() {
       {/* Cycle Action Callout Banner */}
       <section className="rounded-2xl border border-teal-200 bg-gradient-to-br from-teal-50/60 to-emerald-50/40 p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-1">
+          <div>
             <span className="text-xs font-bold uppercase tracking-wider text-teal-900">
               Recommended Action For This Cycle
             </span>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-950">
+            <h2 className="mt-2 text-xl sm:text-2xl font-bold text-slate-950">
               {result.recommended_saving > 0
                 ? `Set aside ${formatCurrency(result.recommended_saving)} into emergency buffer`
                 : result.state === "Buffer Complete"
                   ? "Emergency buffer complete — preserve cash or tackle long-term goals"
                   : "Preserve all cashflow — zero savings recommended this cycle"}
             </h2>
-            <p className="max-w-2xl text-sm leading-relaxed text-slate-700">
-              {explanation}
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-700">
+              {compactActionSummary}
             </p>
           </div>
 

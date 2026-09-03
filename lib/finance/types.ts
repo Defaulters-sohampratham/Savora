@@ -43,6 +43,14 @@ export type Shortfall = {
 
 export type ScenarioResult = Omit<CalculationResult, "scenario">;
 
+export type LLMExplanationResult = {
+  recommendation_explanation: string;
+  why_panel_explanation: string;
+  scenario_explanation: string;
+  is_live_llm: boolean;
+  provider?: string;
+};
+
 export type CalculationResult = {
   state: FinancialState;
   latest_income: number;

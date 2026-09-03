@@ -31,7 +31,7 @@ export default function OutputsPage() {
   } = useWorker();
 
   const [showFactors, setShowFactors] = useState(true);
-  const [showScenario, setShowScenario] = useState(true);
+  const [showScenario, setShowScenario] = useState(false);
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
@@ -105,7 +105,7 @@ export default function OutputsPage() {
         </div>
 
         {/* Grounded Decision Factors Dropdown */}
-        <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-5">
+        <div className="rounded-xl bg-slate-50/80 p-5">
           <button
             type="button"
             onClick={() => setShowFactors(!showFactors)}
@@ -156,11 +156,12 @@ export default function OutputsPage() {
 
         {/* Progress bar */}
         <div className="space-y-2">
-          <div className="h-3.5 w-full overflow-hidden rounded-full bg-slate-100">
+          <div className="relative h-5 w-full overflow-hidden rounded-full bg-violet-100 ring-1 ring-inset ring-violet-200">
             <div
-              className="h-full rounded-full bg-violet-600 transition-all duration-500"
+              className="h-full rounded-full bg-gradient-to-r from-violet-500 to-violet-700 transition-all duration-500"
               style={{ width: `${bufferPercent}%` }}
             />
+            <span className="absolute inset-y-0 right-0 w-0.5 bg-violet-950/60" aria-hidden="true" />
           </div>
           <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
             <span>{bufferPercent}% of target reached</span>
@@ -223,8 +224,9 @@ export default function OutputsPage() {
 
         {showScenario && result.scenario ? (
           <div className="space-y-5">
-            <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-4 text-sm leading-relaxed text-amber-950">
-              <strong>Simulated Impact:</strong> {scenarioExplanation}
+            <div className="flex gap-3 rounded-xl border border-rose-300 bg-rose-100 p-4 text-sm leading-relaxed text-rose-950 shadow-sm">
+              <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-rose-700" aria-hidden="true" />
+              <p><strong>Simulated Impact:</strong> {scenarioExplanation}</p>
             </div>
 
             {/* Side-by-Side Comparison Table */}

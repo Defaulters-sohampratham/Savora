@@ -159,7 +159,7 @@ export default function LandingPage() {
           <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
             A safety net built for income that{" "}
             <span className="bg-gradient-to-r from-teal-700 via-emerald-600 to-teal-800 bg-clip-text text-transparent">
-              changes every week
+              changes every cycle
             </span>
             .
           </h1>
@@ -207,7 +207,7 @@ export default function LandingPage() {
                 Adaptive Volatility-Grounded Buffers
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-slate-650">
-                Savora senses income cycles in real time. We automatically recommend higher savings when earnings surge, and pause savings during lean weeks to safeguard your day-to-day essentials.
+                Savora responds to income cycles in real time. We recommend higher savings when earnings surge, and pause savings during lean cycles to safeguard day-to-day essentials.
               </p>
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function LandingPage() {
                 Get Your Personalized Resilience Plan
               </h2>
               <p className="mt-2 text-sm text-slate-600">
-                Join thousands of rideshare drivers, couriers, and freelance creatives taking the stress out of irregular earnings.
+                Built for rideshare drivers, couriers, and freelance creatives navigating irregular earnings.
               </p>
             </div>
 
@@ -562,11 +562,12 @@ export default function LandingPage() {
                     <span>Emergency Runway Buffer</span>
                     <span className="text-violet-700 font-extrabold">{demoBufferPercent}% Target</span>
                   </div>
-                  <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200">
+                  <div className="relative h-4 w-full overflow-hidden rounded-full bg-violet-100 ring-1 ring-inset ring-violet-200">
                     <div
-                      className="h-full rounded-full bg-violet-600 transition-all duration-500"
+                      className="h-full rounded-full bg-gradient-to-r from-violet-500 to-violet-700 transition-all duration-500"
                       style={{ width: `${demoBufferPercent}%` }}
                     />
+                    <span className="absolute inset-y-0 right-0 w-0.5 bg-violet-950/50" aria-hidden="true" />
                   </div>
                   <div className="flex items-center justify-between text-xs text-slate-600">
                     <span>Saved: {formatCurrency(activeDemoProfile.currentSavings)}</span>
